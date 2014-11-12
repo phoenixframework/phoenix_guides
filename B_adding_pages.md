@@ -66,9 +66,9 @@ If you are working with the 0.5.0 Phoenix release or earlier, there will be an e
 get "/", HelloPhoenix.PageController, :index, as: :pages
 ```
 
-Let's digest what this route is telling us. Visiting http://localhost:4000 issues an http GET request to the root path. All requests like this will be handled by the "index" function in the "HelloPhoenix.PageController" module defined in `web/controllers/page_controller.ex`.
+Let's digest what this route is telling us. Visiting localhost:4000/ issues an http GET request to the root path. All requests like this will be handled by the "index" function in the "HelloPhoenix.PageController" module defined in `web/controllers/page_controller.ex`.
 
-The page we are going to build will simply say "Hello from Phoenix!" when we point our browser to http://localhost:4000/hello.
+The page we are going to build will simply say "Hello from Phoenix!" when we point our browser to localhost:4000/hello.
 
 The first thing we need to do to create that page is define a route for it. Open up `web/router.ex` in your favorite text editor. It should currently look like this.
 
@@ -136,12 +136,17 @@ defmodule HelloPhoenix.HelloController do
   end
 end
 ```
+Note: When running the current Phoenix master, or any version greater than 0.5.0, template names requires an explicit extension when using a string template to render, which means rendering will look like this `render conn, "index.html"`. However, we also allow an atom, i.e. `render conn, :index`, which will behave like <= 5.0 where the template will be chosen by accept headers or format query string param.
+
+Note: When running the current Phoenix master, or any version greater than 0.5.0, template names need to include their protocol file extension. That means rendering will look like this `render conn, "index.html"`.
 
 We will save a more complete discussion of controllers for the controller specific guide, but for now, the interesting part is this line.
 
 ```elixir
 render conn, "index"
 ```
+
+Again, use `render conn, "index.html"`, or the atom form for current Phoenix master or versions greater than 0.5.0.
 
 This simply says that we want to render the `index.html.eex` template for our `hello_controller.ex`. Notice that we are ignoring the params argument to the index function. We aren't taking input from the request at all to render this page.
 
@@ -159,7 +164,7 @@ In order to render any templates for our `HelloController`, we need a HelloView.
 
 ```elixir
 defmodule HelloPhoenix.HelloView do
-  use HelloPhoenix.Views
+  use HelloPhoenix.View
 end
 ```
 
@@ -177,7 +182,7 @@ Let's do that now. Create `web/templates/hello/index.html.eex` and make it look 
 </div>
 ```
 
-Now that we've got the route, controller, view and template, we should be able to point our browsers at [http://localhost:4000/hello]([http://localhost:4000/hello]) and see our greeting from Phoenix!
+Now that we've got the route, controller, view and template, we should be able to point our browsers at localhost:4000/hello and see our greeting from Phoenix!
 
 ![Phoenix Greets Us](/images/hello-from-phoenix.png)
 
@@ -214,7 +219,7 @@ end
 ```
 Notice that we put the atom `:messenger` in the path. Phoenix will take whatever value that appears in that position in the url and passes a Dict with the key "messanger" pointing to that value to the controller.
 
-For example, if we point the browser at: http://localhost:4000/hello/Frank , the value of ":messenger" will be "Frank".
+For example, if we point the browser at: localhost:4000/hello/Frank , the value of ":messenger" will be "Frank".
 
 ###A New Action
 
@@ -226,9 +231,11 @@ def show(conn, %{"messenger" => messenger}) do
 end
 ```
 
-There are a couple of things to notice here. We pattern match against the params passed into the show function so that the messenger variable will be bound to the value we put in the :messenger position in the url. For example, if our url is [http://localhost:4000/hello/Frank]([http://localhost:4000/hello/Frank]), the messenger variable would be bound to "Frank".
+Again, This should be `render conn, "show.html", messenger: messenger` for current Phoenix versions greater than 0.5.0.
 
-We also pass a third argument into the render function, a key value pair where ":messenger" is the key, and the messenger variable is passed as the value.
+There are a couple of things to notice here. We pattern match against the params passed into the show function so that the messenger variable will be bound to the value we put in the :messenger position in the url. For example, if our url is localhost:4000/hello/Frank, the messenger variable would be bound to "Frank".
+
+We also pass a third argument into the render function, a key value pair where `:messenger` is the key, and the messenger variable is passed as the value.
 
 It's good to remember that the keys to the params Dict will always be strings.
 
@@ -246,9 +253,9 @@ And this is what the template should look like.
 </div>
 ```
 
-Our messenger appears as "@messenger". In this case, this is not a module attribute. It is special bit of metaprogrammed syntax which stands in for `Dict.get(assigns, :messenger)`. The result is much nicer on the eyes and much easier to work with in a template.
+Our messenger appears as `@messenger`. In this case, this is not a module attribute. It is special bit of metaprogrammed syntax which stands in for `Dict.get(assigns, :messenger)`. The result is much nicer on the eyes and much easier to work with in a template.
 
-We're done. If you point your browser here: http://localhost:4000/hello/Frank, you should see a page that looks like this:
+We're done. If you point your browser here: localhost:4000/hello/Frank, you should see a page that looks like this:
 
 ![Frank Greets Us from Phoenix](/images/hello-world-from-frank.png)
 
