@@ -159,7 +159,7 @@ In order to render any templates for our `HelloController`, we need a HelloView.
 
 ```elixir
 defmodule HelloPhoenix.HelloView do
-  use HelloPhoenix.Views
+  use HelloPhoenix.View
 end
 ```
 
