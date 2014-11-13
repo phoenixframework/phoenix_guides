@@ -132,7 +132,7 @@ defmodule HelloPhoenix.HelloController do
   plug :action
 
   def index(conn, _params) do
-    render conn, "index"
+    render conn, :index
   end
 end
 ```
@@ -140,7 +140,7 @@ end
 We will save a more complete discussion of controllers for the controller specific guide, but for now, the interesting part is this line.
 
 ```elixir
-render conn, "index"
+render conn, :index
 ```
 
 This simply says that we want to render the `index.html.eex` template for our `hello_controller.ex`. Notice that we are ignoring the params argument to the index function. We aren't taking input from the request at all to render this page.
@@ -222,13 +222,13 @@ Requests to our new route will be handled by the HelloPhoenix.HelloController "s
 
 ```elixir
 def show(conn, %{"messenger" => messenger}) do
-  render conn, "show", messenger: messenger
+  render conn, :show, messenger: messenger
 end
 ```
 
 There are a couple of things to notice here. We pattern match against the params passed into the show function so that the messenger variable will be bound to the value we put in the :messenger position in the url. For example, if our url is [localhost:4000/hello/Frank]([http://localhost:4000/hello/Frank]), the messenger variable would be bound to "Frank".
 
-We also pass a third argument into the render function, a key value pair where ":messenger" is the key, and the messenger variable is passed as the value.
+We also pass a third argument into the render function, a key value pair where `:messenger` is the key, and the messenger variable is passed as the value.
 
 It's good to remember that the keys to the params Dict will always be strings.
 
@@ -246,7 +246,7 @@ And this is what the template should look like.
 </div>
 ```
 
-Our messenger appears as "@messenger". In this case, this is not a module attribute. It is special bit of metaprogrammed syntax which stands in for `Dict.get(assigns, :messenger)`. The result is much nicer on the eyes and much easier to work with in a template.
+Our messenger appears as `@messenger`. In this case, this is not a module attribute. It is special bit of metaprogrammed syntax which stands in for `Dict.get(assigns, :messenger)`. The result is much nicer on the eyes and much easier to work with in a template.
 
 We're done. If you point your browser here: [localhost:4000/hello/Frank]([http://localhost:4000/hello/Frank]), you should see a page that looks like this:
 
