@@ -212,7 +212,7 @@ There are a couple of things to notice here. We pattern match against the params
 
 We also pass a third argument into the render function, a key value pair where `:messenger` is the key, and the messenger variable is passed as the value.
 
-Note: It's important to remember that the keys to the params Dict will *always* be strings.
+Note: It's important to remember that the keys to the params Dict will always be strings.
 
 ###A New Template
 
