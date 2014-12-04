@@ -26,16 +26,14 @@ $ git checkout master
 
 - Get the dependencies and compile the whole project
 ```console
-$ mix do deps.get, compile
-```
-Note: This is passing a list of arguments to mix and is functionally equivalent to the two line version.
-
-```console
 $ mix deps.get
+$ mix compile
 ```
 
+Note: Mix allows us to execute more than one task at a time by passing it a list of arguments. The following example is functionally equivalent to the two line version.
+
 ```console
-$ mix compile
+$ mix do deps.get, compile
 ```
 
 Once this is done, we need to have Phoenix generate a new project for us, and we need it to do so outside the Phoenix repo itself. Phoenix provides a mix task `phoenix.new` for this, and the task takes both the name of our new project and the path to where we want  the new application to live.
@@ -75,7 +73,7 @@ Once the application compiles successfully, we can start it.
 $ mix phoenix.start
 ```
 
-If we point our favorite web browser at [http://localhost:4000](http://localhost:4000), we should see the Phoenix Framework welcome page.
+By default Phoenix accepts request at port 4000, so if we point our favorite web browser at [http://localhost:4000](http://localhost:4000), we should see the Phoenix Framework welcome page.
 
 ![Phoenix Welcome Page](/images/welcome-to-phoenix.png)
 
