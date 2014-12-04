@@ -55,7 +55,7 @@ Enough prep, let's get on with our first new Phoenix page!
 
 ###A New Route
 
-Routes map unique http verb/path pairs to controller/action pairs which will handle them. Phoenix generates a router file for us in new applications at `web/router.ex`. This is where we will be working for this section.
+Routes map unique HTTP verb/path pairs to controller/action pairs which will handle them. Phoenix generates a router file for us in new applications at `web/router.ex`. This is where we will be working for this section.
 
 The route for our "Welcome to Phoenix!" page from the previous Up And Running Guide looks like this.
 ```elixir
@@ -131,7 +131,7 @@ end
 ```
 We'll save a discussion of `use Phoenix.Controller` and `plug :action` for the Controller Guide. For now, let's focus on the `index/2` action.
 
-All controller actions take two arguments. The first is `conn`, a struct which holds  a ton of data about the request. The second is `params`, which are the request parameters. Here, we are not using `params` and avoiding compiler warnings by adding the leading '_'.
+All controller actions take two arguments. The first is `conn`, a struct which holds a ton of data about the request. The second is `params`, which are the request parameters. Since we are not using the second parameter in this example, we name it `_params`; by prefixing it with '_' we avoid compiler warnings.
 
 The core of this action is `render conn, "index.html"`. This tells Phoenix to find a template called `index.html.eex` and render it. Phoenix will look for the template in a directory named after our controller, so `web/templates/hello`.
 
@@ -212,7 +212,7 @@ There are a couple of things to notice here. We pattern match against the params
 
 We also pass a third argument into the render function, a key value pair where `:messenger` is the key, and the messenger variable is passed as the value.
 
-It's good to remember that the keys to the params Dict will always be strings.
+Note: It's important to remember that the keys to the params Dict will *always* be strings.
 
 ###A New Template
 
@@ -234,4 +234,4 @@ We're done. If you point your browser here: [http://localhost:4000/hello/Frank](
 
 ![Frank Greets Us from Phoenix](/images/hello-world-from-frank.png)
 
-Play around a bit. Whatever you put after /hello/ will appear on the page as your messenger.
+Play around a bit. Whatever you put after `/hello/` will appear on the page as your messenger.
