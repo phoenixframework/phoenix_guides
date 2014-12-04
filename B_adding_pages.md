@@ -131,7 +131,7 @@ end
 ```
 We'll save a discussion of `use Phoenix.Controller` and `plug :action` for the Controller Guide. For now, let's focus on the `index/2` action.
 
-All controller actions take two arguments. The first is `conn`, a struct which holds a ton of data about the request. The second is `params`, which are the request parameters. Since we are not using the second parameter in this example, we name it `_params`; by prefixing it with '_' we avoid compiler warnings.
+All controller actions take two arguments. The first is `conn`, a struct which holds a ton of data about the request. The second is `params`, which are the request parameters. Since we are not using the second parameter in this example, we name it `_params`, prefixing it with '_' to avoid compiler warnings.
 
 The core of this action is `render conn, "index.html"`. This tells Phoenix to find a template called `index.html.eex` and render it. Phoenix will look for the template in a directory named after our controller, so `web/templates/hello`.
 
