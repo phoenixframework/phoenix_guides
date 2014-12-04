@@ -377,7 +377,7 @@ end
 
 What it doesn't have is a new template for rendering text. Let's add one at `/web/templates/page/index.txt.eex`.
 
-There are two things to note about this. The first is that we should let Phoenix select a template based on the format, instead of us telling it what to do. To achieve this, we use a symbol with just the name of the template instead of a string when calling `render`.
+There are two things to note about this. The first is that we should let Phoenix select a template based on the format, instead of us telling it what to do. To achieve this, we use a atom with just the name of the template instead of a string when calling `render`.
 
 The second is that we need to have a compilable template. That would be eex by default. Without the `.eex` file extension, Phoenix will not recognize that a text template exists, and it will complain if we try to use it.
 
