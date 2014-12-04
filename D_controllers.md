@@ -386,7 +386,7 @@ Here is our example `index.txt.eex` template.
 ```elixir
 "OMG, this is actually some text."
 ```
-If we go to `http://localhost:4000/?format=text`, we will see "OMG, this is actually some text."
+If we go to `http://localhost:4000/?format=txt`, we will see "OMG, this is actually some text."
 
 Of course, we can pass data into our template as well. Let's change our action to take in a message parameter.
 
