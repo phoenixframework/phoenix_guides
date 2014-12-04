@@ -16,7 +16,7 @@ Phoenix is made up of a number of distinct parts, each with its own purpose and 
   - parses incoming requests and dispatches to the correct controller/action, passing parameters as needed
   - provides helpers to generate route paths or urls to resources
 - Controllers
-  - provide functions called 'Actions' to handle requests
+  - provide functions called actions to handle requests
   - Actions
     - prepare data and pass it into views
     - invoke rendering via views
@@ -54,7 +54,7 @@ This is how 99s describes these technologies:
 
 - Cowboy is a small, fast, modular HTTP server supporting Websockets, SPDY and more.
 - Ranch is a socket acceptor pool for TCP protocols. It is also a standalone library for building networked applications.
-- Bullet is simple, reliable, efficient streaming library.
+- Bullet is a simple, reliable and efficient streaming library.
 - Sheriff uses parse transforms for type based validation. Sheriff also validates data dynamically using Erlang's type system with no extra code required.
 
-Cowboy has fantastic documentation. The Guides are especially helpful. Learning more about Cowboy will surely help you to understand of Phoenix more fully. You can find links to relevant Cowboy documentation in the [Resources Guide](/Z_resources.md).
+Cowboy has fantastic documentation. The Guides are especially helpful. Learning more about Cowboy will surely help you to understand Phoenix more fully. You can find links to relevant Cowboy documentation in the [Resources Guide](/Z_resources.md).
