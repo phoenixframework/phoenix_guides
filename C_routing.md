@@ -776,7 +776,7 @@ defmodule HelloPhoenix.Router do
 end
 ```
 
-`plug :super` will invoke any plugs in the `:browser` pipeline before it plugs `:authenticate` and `:set_current_user`.
+`plug :super` will invoke any plugs in the `:before` pipeline before it plugs `:authenticate` and `:set_current_user`.
 
 ###Channel Routes
 
