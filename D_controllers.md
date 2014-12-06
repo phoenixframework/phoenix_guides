@@ -377,7 +377,7 @@ end
 
 What it doesn't have is a new template for rendering text. Let's add one at `/web/templates/page/index.txt.eex`.
 
-There are two things to note about this. The first is that even though we will call it with `?format=text`, we need to shorten "text" in the template name to "txt".
+There are two things to note about this. The first is that we should let Phoenix select a template based on the format, instead of us telling it what to do. To achieve this, we use a atom with just the name of the template instead of a string when calling `render`.
 
 The second is that we need to have a compilable template. That would be eex by default. Without the `.eex` file extension, Phoenix will not recognize that a text template exists, and it will complain if we try to use it.
 
@@ -386,13 +386,13 @@ Here is our example `index.txt.eex` template.
 ```elixir
 "OMG, this is actually some text."
 ```
-If we go to `http://localhost:4000/?format=text`, we will see "OMG, this is actually some text."
+If we go to `http://localhost:4000/?format=txt`, we will see "OMG, this is actually some text."
 
 Of course, we can pass data into our template as well. Let's change our action to take in a message parameter.
 
 ```elixir
 def index(conn, params) do
-  render conn, "index.html", message: params["message"]
+  render conn, :index, message: params["message"]
 end
 ```
 
@@ -405,13 +405,13 @@ Now if we go to `http://localhost:4000/?format=text&message=CrazyTown`, we will 
 
 ### Setting Content Type
 
-Analogous to the `format` query string param, we can render any sort of format we want by modifying the accepts headers and providing the appropriate template. If we wanted to render an xml version of our index action, we might implement the action like this.
+Analogous to the `format` query string param, we can render any format we want by overwriting the Accepts header with the desired MimeType, tricking the view into rendering the apropriate template. If we wanted to render an XML version of our index action, we might implement the action like this:
 
 ```elixir
 def index(conn, _params) do
   conn
   |> put_resp_content_type("text/xml")
-  |> render "index.html", content: some_xml_content
+  |> render :index, content: some_xml_content
 end
 ```
 We would then need to provide an `index.xml.eex` template which created valid xml, and we would be done.
