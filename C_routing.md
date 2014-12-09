@@ -776,7 +776,7 @@ defmodule HelloPhoenix.Router do
 end
 ```
 
-`plug :super` will invoke any plugs in the `:browser` pipeline before it plugs `:authenticate` and `:set_current_user`.
+`plug :super` will invoke any plugs in the `:before` pipeline before it plugs `:authenticate` and `:set_current_user`.
 
 ###Channel Routes
 
@@ -784,7 +784,7 @@ Channels are a very exciting, realtime component of the Phoenix framework. They 
 
 Channels are roughly analogous to controllers except that they are capable of bi-directional communication and their connections persist beyond the initial response. They are also closely tied to a client - written for JavaScript, iOS or Android. For now, we'll focus on defining routes for them and leave a detailed discussion of their capabilities to the Channel Guide.
 
-Each channel depend on a socket mounted at a given point for its communication. The first thing we need to do to define a route for a channel, then, is to define a socket and specify the path to its mount point.
+Each channel depend on a socket mounted at a given point for its communication. The first thing we need to do is to define a socket and specify the path to its mount point.
 
 Here's what that looks like in our router file.
 
