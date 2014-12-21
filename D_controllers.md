@@ -134,7 +134,7 @@ Besides `put/3` and `get_all/2`, the `Phoenix.Controller.Flash` module has some 
 `pop_all/2` also takes `conn` and a key, and returns a tuple containing a list of values and `conn`.
 
 ### Rendering
-Controllers have several ways of rendering content. The simplest is to render some plain text. Phoenix provides the `text/2` function for just this.
+Controllers have several ways of rendering content. The simplest is to render some plain text using the `text/2` function.
 
 Let's say we have a show action which receives an id from the params map, and all we want to do is return some text with the id. For that, we could do the following.
 
