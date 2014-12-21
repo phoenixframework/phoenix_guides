@@ -176,7 +176,7 @@ def show(conn, %{"id" => id}) do
 end
 ```
 
-Hitting `/our_path/15` this time generates the HTML document as we created the string for in the action, except that the value `15` will be interpolated into the page. Note that what we wrote in the action is not an eex document. It's a multi-line string, so we interpolate the `id` variable like this `#{id}` instead of this `<%= id %>`.
+Hitting `/our_path/15` now renders the given HTML string with the value `15` interpolated. Note that what we wrote in the action is not an `eex` tempalte. It's a multi-line string, so we interpolate the `id` variable like this `#{id}` instead of this `<%= id %>`.
 
 It is worth noting that the `text/2`, `json/2`, and `html/2` functions require neither a Phoenix view, nor a template to render.
 
