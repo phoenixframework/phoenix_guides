@@ -145,7 +145,7 @@ end
 ```
 Assuming we had a route for `get "/our_path/:id"` mapped to this show action, going to `/our_path/15` in your browser should display `Showing id 15` as plain text without any HTML.
 
-A step beyond this is rendering pure json. Phoenix provides the `json/2` function for this. As long as we pass in something that the Poison library can parse into JSON - a map, in this case - this will work.
+A step beyond this is rendering pure json. Phoenix provides the `json/2` function for this. We must pass in something that the Poison library can parse into JSON such as a map.
 
 ```elixir
 def show(conn, %{"id" => id}) do
