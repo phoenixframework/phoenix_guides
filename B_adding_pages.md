@@ -95,7 +95,7 @@ end
 
 For now, we'll ignore the pipelines and the use of `scope` here and just focus on adding a route. (We cover these topics in the Routing Guide, if you're curious.)
 
-Let's add a new route to the router that maps the GET for `/hello` to the index action of a soon-to-be created `HelloPhoenix.HelloController`.
+Let's add a new route that maps the GET for `/hello` to the index action of a soon-to-be created `HelloPhoenix.HelloController`.
 
 ```elixir
 get "/hello", HelloController, :index
