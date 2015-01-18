@@ -86,23 +86,23 @@ In our `lib/hello_phoenix.ex` file, we need to start our endpoint as part of the
 
 Note: Just to be extra clear, this file is named after our application. If we had called it `MyApp`, this file would be `lib/my_app.ex`.
 
-#### A Note about `mix phoenix.start`
+#### A Note about `mix phoenix.server`
 
-Once we add the `HelloPhoenix.Endpoint.start` to the `start/2` function, `mix phoenix.start` will no longer work, and we'll get an error if we try to run it.
+Once we add the `HelloPhoenix.Endpoint.start` to the `start/2` function, `mix phoenix.server` will no longer work, and we'll get an error if we try to run it.
 
 ```text
-$ mix phoenix.start
+$ mix phoenix.server
 Running HelloPhoenix.Endpoint with Cowboy on port 4000 (http)
 ** (RuntimeError) Something went wrong while starting endpoint: already started: #PID<0.139.0>
    (phoenix) lib/phoenix/endpoint/adapter.ex:122: Phoenix.Endpoint.Adapter.report/4
    (phoenix) lib/phoenix/endpoint/adapter.ex:82: Phoenix.Endpoint.Adapter.start/2
    (elixir) lib/enum.ex:537: Enum."-each/2-lists^foreach/1-0-"/2
    (elixir) lib/enum.ex:537: Enum.each/2
-   (phoenix) lib/mix/tasks/phoenix.start.ex:17: Mix.Tasks.Phoenix.Start.run/1
+   (phoenix) lib/mix/tasks/phoenix.server.ex:17: Mix.Tasks.Phoenix.Start.run/1
    (mix) lib/mix/cli.ex:55: Mix.CLI.run_task/2
 ```
 
-This error is telling us that `mix phoenix.start` has tried to start our endpoint twice. Here's what's happening. Invoking `mix` will always start our application, and starting our application will, of course, start our endpoint. Since we added the `HelloPhoenix.Endpoint.start` line to the `start/2` function, running the `phoenix.start` task will attempt to start the endpoint again, causing the error.
+This error is telling us that `mix phoenix.server` has tried to start our endpoint twice. Here's what's happening. Invoking `mix` will always start our application, and starting our application will, of course, start our endpoint. Since we added the `HelloPhoenix.Endpoint.start` line to the `start/2` function, running the `phoenix.server` task will attempt to start the endpoint again, causing the error.
 
 How do we start our application in development, once we've modified the `start/2` function? The short answer is that we can just run `iex -S mix`. This will start our application and keep it running. It has a nice advantage in that we can also interact with the running application this way.
 
