@@ -64,7 +64,12 @@ If we do create an ambiguous route, the router will still compile, but we will g
 Define this route at the bottom of the `scope "/", HelloPhoenix do` block in the router.
 
 ```elixir
-get "/", RootController, :index
+scope "/", HelloPhoenix do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
+    get "/", RootController, :index   # cannot match
+  end
 ```
 
 Then run `$ mix compile` at the root of your project. You will see the following warning from the compiler.
