@@ -95,18 +95,6 @@ end
 ```
 Note: Just to be extra clear, this file is named after our application. If we had called it `MyApp`, this file would be `lib/my_app.ex`.
 
-There's one last thing we need to do before we create our release. We need to configure our Endpoint to act as a server in `config.exs`.
-
-```elixir
-# Configures the endpoint
-config :hello_phoenix, HelloPhoenix.Endpoint,
-url: [host: "localhost"],
-secret_key_base: "OOmSQ22Liduec/twplfKrEseNL2m7ivMK32ywKECyhckgQVLtBCxS3cMusKD2v8f",
-debug_errors: false,
-server: true
-```
-When we run `$ mix phoenix.server` to start our application, that mix task automatically sets the server parameter to true. When we're creating a release, however, we need to make sure that we have this manually configured. If you get through this release guide, and you aren't seeing any pages coming from your server, this is a likely culprit.
-
 ### Generating the Release
 
 Now that we've configured our application, let's build our release by running `mix release` at the root of our application.
