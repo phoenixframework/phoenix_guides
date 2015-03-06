@@ -1,6 +1,3 @@
-Testing Phoenix Channels
-========================
-
 Testing Phoenix Channels will help ensure that your code continues to work
 as you make changes to your application. It helps guide development and
 ensure there is no breakage later on down the road.
@@ -8,7 +5,7 @@ ensure there is no breakage later on down the road.
 Phoenix has built in helper functions in `Phoenix.Channel.Test` that help
 make testing Channels easy.
 
-## Testing `join` authorization
+### Testing `join` authorization
 
 Let’s add a new file at `test/channels/room_channel_test.exs`
 
@@ -79,7 +76,7 @@ fix that.
 Now if we run `mix test` we will see that both tests pass. Nice job! Now you
 see how to test against
 
-## Testing `handle_in` with `reply`
+### Testing `handle_in` with `reply`
 
 Let's add some tests for handling incoming messages.
 
@@ -108,7 +105,7 @@ Let's add this function to our `RoomChannel` to make this work
       reply socket, "room:info", %{title: "Elixir/Phoenix discussion"}
     end
 
-## Testing `handle_in` with `broadcast`
+### Testing `handle_in` with `broadcast`
 
 Let's add some tests for handling incoming messages that broadcast
 
@@ -141,7 +138,7 @@ Let's add this function to our `RoomChannel` to make this work.
       broadcast socket, "room:new_chat", message_params
     end
 
-## Testing `handle_out`
+### Testing `handle_out`
 
 What if we want to timestamp outgoing messages? Let's add a test and an
 implementation for that.
