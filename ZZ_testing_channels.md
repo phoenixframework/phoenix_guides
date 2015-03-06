@@ -34,7 +34,7 @@ with `import Phoenix.Channel.Test`.
 Next, we build a socket with the topic `"room:join"` and join the
 `RoomChannel` with the params `%{"token" => "phoenix"}`. We pattern match to
 get the status of the response and check that it is `:ok` meaning that the
-socket is authorized.  
+socket is authorized.
 
 When we run `mix test` we see that we have not yet defined
 `App.RoomChannel`. Let’s get this test passing by creating a file at
@@ -140,3 +140,27 @@ Let's add this function to our `RoomChannel` to make this work.
 
       broadcast socket, "room:new_chat", message_params
     end
+
+## Testing `handle_out`
+
+What if we want to timestamp outgoing messages? Let's add a test and an
+implementation for that.
+
+    # Add to `App.RoomChannelTest`
+
+    test "room:new_chat adds timestamp on the way out"
+      build_socket("room:new_chat")
+      |> subscribe(App.PubSub)
+      |> handle_out(RoomChannel, %{message: "foo"})
+
+      assert_socket_replied("room:new_chat", %{message: "foo", time: "now!"})
+    end
+
+Let's create the function to handle this
+
+    def handle_out("room:new_chat", message, socket) do
+      reply socket, "room:new_chat", Map.put(socket, :time, "now!")
+    end
+
+This wraps up the introduction to testing channels in Phoenix
+With these helpers you should be able to
