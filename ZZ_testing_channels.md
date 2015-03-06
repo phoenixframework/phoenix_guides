@@ -110,7 +110,6 @@ Let's add this function to our `RoomChannel` to make this work
 
 ## Testing `handle_in` with `broadcast`
 
-
 Let's add some tests for handling incoming messages that broadcast
 
     # Add to `App.RoomChannelTest`
@@ -119,10 +118,15 @@ Let's add some tests for handling incoming messages that broadcast
       chat_message = %{message: "I <3 Elixir"}
 
       build_socket("room:new_chat")
+      |> subscribe(App.PubSub)
       |> handle_in(RoomChannel, chat_message)
 
       assert_socket_broadcasted("room:new_chat", chat_message)
     end
+
+When building the socket we need to also make sure to subscribe to it, or else
+there will be no one to broadcast to and the test will fail. Typically the
+module you pass in is `NameOfYourApp.PubSub`.
 
 This time we call the Channel with params for a new chat message and assert
 that the channel broadcasted a new chat with the correct payload (the new
