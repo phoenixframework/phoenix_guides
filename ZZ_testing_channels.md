@@ -9,10 +9,10 @@ make testing Channels easy.
 
 Let’s add a new file at `test/channels/room_channel_test.exs`
 
-    defmodule App.RoomChannelTest do
+    defmodule HelloPhoenix.RoomChannelTest do
       use ExUnit.Case
       import Phoenix.Channel.Test
-      alias App.RoomChannel
+      alias HelloPhoenix.RoomChannel
 
       test "room:join requires the super secure auth token" do
         {status, _socket} =
@@ -34,10 +34,10 @@ get the status of the response and check that it is `:ok` meaning that the
 socket is authorized.
 
 When we run `mix test` we see that we have not yet defined
-`App.RoomChannel`. Let’s get this test passing by creating a file at
+`HelloPhoenix.RoomChannel`. Let’s get this test passing by creating a file at
 `web/channels/room_channel.ex`
 
-    defmodule App.RoomChannel do
+    defmodule HelloPhoenix.RoomChannel do
       use Phoenix.Channel
 
       def join("room:join", %{"token" => token}, socket) do
@@ -49,7 +49,7 @@ This will make our test pass, but it’s not quite what we need. Right now the
 Channel will authorize any socket. Let’s add a test to make sure that a
 channel will fail when the token is not correct.
 
-    # Add this inside `App.RoomChannelTest`
+    # Add this inside `HelloPhoenix.RoomChannelTest`
 
     test "room:join returns unauthorized if token is not correct" do
       {status, message, socket} =
@@ -63,7 +63,7 @@ channel will fail when the token is not correct.
 If we run mix test this will not pass since we haven't added any code. Let's
 fix that.
 
-    # In `App.RoomChannel`
+    # In `HelloPhoenix.RoomChannel`
 
     def join("room:join", %{"token" => token}, socket) do
       if token == "phoenix" do
@@ -80,7 +80,7 @@ see how to test against
 
 Let's add some tests for handling incoming messages.
 
-    # Add to `App.RoomChannelTest`
+    # Add to `HelloPhoenix.RoomChannelTest`
 
     test "room:info replies with the new room's info" do
       build_socket("room:info")
@@ -109,13 +109,13 @@ Let's add this function to our `RoomChannel` to make this work
 
 Let's add some tests for handling incoming messages that broadcast
 
-    # Add to `App.RoomChannelTest`
+    # Add to `HelloPhoenix.RoomChannelTest`
 
     test "room:new_chat broadcasts the chat message" do
       chat_message = %{message: "I <3 Elixir"}
 
       build_socket("room:new_chat")
-      |> subscribe(App.PubSub)
+      |> subscribe(HelloPhoenix.PubSub)
       |> handle_in(RoomChannel, chat_message)
 
       assert_socket_broadcasted("room:new_chat", chat_message)
@@ -123,7 +123,7 @@ Let's add some tests for handling incoming messages that broadcast
 
 When building the socket we need to also make sure to subscribe to it, or else
 there will be no one to broadcast to and the test will fail. Typically the
-module you pass in is `NameOfYourApp.PubSub`.
+module you pass in is `NameOfYourHelloPhoenix.PubSub`.
 
 This time we call the Channel with params for a new chat message and assert
 that the channel broadcasted a new chat with the correct payload (the new
@@ -143,11 +143,11 @@ Let's add this function to our `RoomChannel` to make this work.
 What if we want to timestamp outgoing messages? Let's add a test and an
 implementation for that.
 
-    # Add to `App.RoomChannelTest`
+    # Add to `HelloPhoenix.RoomChannelTest`
 
     test "room:new_chat adds timestamp on the way out"
       build_socket("room:new_chat")
-      |> subscribe(App.PubSub)
+      |> subscribe(HelloPhoenix.PubSub)
       |> handle_out(RoomChannel, %{message: "foo"})
 
       assert_socket_replied("room:new_chat", %{message: "foo", time: "now!"})
