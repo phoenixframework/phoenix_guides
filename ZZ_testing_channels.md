@@ -126,7 +126,7 @@ there will be no one to broadcast to and the test will fail. Typically the
 module you pass in is `NameOfYourHelloPhoenix.PubSub`.
 
 This time we call the Channel with params for a new chat message and assert
-that the channel broadcasted a new chat with the correct payload (the new
+that the channel has broadcast a new chat with the correct payload (the new
 chat). We broadcast so that anyone on this channel will see that a new chat
 was added.
 
