@@ -12,7 +12,7 @@ In order to act as a plug, a function simply needs to accept a connection struct
 ```elixir
 def put_headers(conn, key_values) do
   Enum.reduce key_values, conn, fn {k, v}, conn ->
-    Plug.Conn.put_resp_header(conn, k, v)
+    conn |> Plug.Conn.put_resp_header(k, v)
   end
 end
 ```
@@ -48,7 +48,7 @@ defmodule HelloPhoenix.MessageController do
           message ->
             case authorize_message(conn, params["id"])
               :ok ->
-                render conn, :show, page: find_page(params["id"])
+                conn |> render :show, page: find_page(params["id"])
               :error ->
                 conn |> put_flash("You must be logged in") |> redirect(to: "/")
             end
@@ -72,13 +72,13 @@ defmodule HelloPhoenix.MessageController do
   plug :action
 
   def show(conn, params) do
-    render conn, :show, page: find_page(params["id"])
+    conn |> render :show, page: find_page(params["id"])
   end
 
   defp authenticate(conn, _) do
     case Authenticator.find_user(conn) do
       {:ok, user} ->
-        assign(conn, :user, user)
+        conn |> assign(:user, user)
       :error ->
         conn |> put_flash("You must be logged in") |> redirect(to: "/") |> halt
     end
@@ -89,7 +89,7 @@ defmodule HelloPhoenix.MessageController do
       nil ->
         conn |> put_flash("That message wasn't found") |> redirect(to: "/") |> halt
       message ->
-        assign(conn, :message, message)
+        conn |> assign(:message, message)
     end
   end
 
@@ -126,9 +126,9 @@ defmodule HelloPhoenix.Plugs.Locale
   def init(default), do: default
 
   def call(%Plug.Conn{params: %{"locale" => loc}}, _default) when loc in @locales
-    assign(conn, :locale, loc)
+    conn |> assign(:locale, loc)
   end
-  def call(conn, default), do: assign(conn, :locale, default)
+  def call(conn, default), do: conn |> assign(:locale, default)
 end
 
 defmodule HelloPhoenix.Router do
