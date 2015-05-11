@@ -10,7 +10,7 @@ These Guides aim to be inclusive. We use "we" and "our" instead of "you" and
 
 Ideally there is something for everybody in each guide, from beginner to expert.
 This is hard, maybe impossible. When we need to compromise, we do so on behalf
-of beginning users because expert users have more tools at their disposal to
+of beginner users because expert users have more tools at their disposal to
 help themselves.
 
 The general pattern we use for presenting information is to first introduce a
