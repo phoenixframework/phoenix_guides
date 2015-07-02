@@ -137,6 +137,8 @@ To make that happen, let's create a new `web/controllers/hello_controller.ex` fi
 defmodule HelloPhoenix.HelloController do
   use HelloPhoenix.Web, :controller
 
+  plug :action
+
   def index(conn, _params) do
     render conn, "index.html"
   end
