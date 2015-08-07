@@ -151,7 +151,7 @@ The core of this action is `render conn, "index.html"`. This tells Phoenix to fi
 
 Note: Using an atom as the template name will also work here, `render conn, :index`, but the template will be chosen based off the Accept headers, ie `"index.html"` or `"index.json"`, etc.
 
-The modules responsible for rendering are views, and we'll make a new one of those next.
+The modules responsible for rendering our views, and we'll make a new one of those next.
 
 ### A New View
 
