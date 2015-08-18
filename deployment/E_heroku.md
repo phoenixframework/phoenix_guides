@@ -164,6 +164,12 @@ config :hello_phoenix, HelloPhoenix.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: 20
 ```
+## Adding a Procfile to our Project
+A `Procfile` is a mechanism for declaring what commands are run by Heroku. In our Procfile we need to declare a web worker that starts our phoenix server:
+
+```
+web: mix phoenix.server
+```
 
 ## Creating Environment Variables in Heroku
 
