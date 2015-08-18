@@ -165,7 +165,7 @@ config :hello_phoenix, HelloPhoenix.Repo,
   pool_size: 20
 ```
 ## Adding a Procfile to our Project
-A `Procfile` is a mechanism for declaring what commands are run by Heroku. Our Procfile for phoenix should look like this:
+A `Procfile` is a mechanism for declaring what commands are run by Heroku. In our Procfile we need to declare a web worker that starts our phoenix server:
 
 ```
 web: mix phoenix.server
