@@ -7,6 +7,7 @@ Create project named chat:
 
 ```console
 $mix phoenix.new chat
+$cd chat
 $mix ecto.create
 ```
 
