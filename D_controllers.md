@@ -386,7 +386,7 @@ Of course, we can pass data into our template as well. Let's change our action t
 
 ```elixir
 def index(conn, params) do
-  render conn, "index.text", message: params["message"]
+  render conn, :index, message: params["message"]
 end
 ```
 
