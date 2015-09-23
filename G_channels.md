@@ -194,7 +194,8 @@ We handle incoming events with `handle_in/3`. We can pattern match on the event 
 ```elixir
 defmodule HelloPhoenix.RoomChannel do
   use Phoenix.Channel
-
+  intercept ["new_msg"]
+  
   def join("rooms:lobby", auth_msg, socket) do
     {:ok, socket}
   end
