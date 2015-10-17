@@ -11,9 +11,9 @@ config :hello_phoenix, HelloPhoenix.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "some_crazy_long_string_phoenix_generated",
-  debug_errors: false,
+  render_errors: [accepts: ~w(html json)],
   pubsub: [name: HelloPhoenix.PubSub,
-  adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2]
 ```
 
 Plug uses our `secret_key_base` value to encrypt and sign each cookie to make sure it can't be read or tampered with.
