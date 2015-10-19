@@ -278,6 +278,44 @@ $ heroku run mix ecto.migrate
 
 And that's it!
 
+## Seeing errors?
+
+Sometimes our Phoenix app can be incompatible with the versions of Erlang and Elixir that the buildpack provides by default.
+
+```
+...
+remote:  !     Push rejected, Internal error, please try again
+remote:
+remote: Verifying deploy....
+remote:
+remote: !	Push rejected to mysterious-meadow-6277.
+remote:
+To https://git.heroku.com/mysterious-meadow-6277.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://git.heroku.com/mysterious-meadow-6277.git'
+```
+
+We can override these default by adding `elixir_buildpack.config` to our project:
+
+```
+erlang_version=18.0
+elixir_version=1.0.5
+```
+
+And then deploy again:
+
+```
+$ git add elixir_buildpack.config
+$ git commit -m "Explicitly specify Erlang and Elixir versions for Heroku"
+$ git push heroku master
+...
+remote: Verifying deploy... done.
+To https://git.heroku.com/mysterious-meadow-6277.git
+ * [new branch]      master -> master
+ ```
+ 
+And that's really it!
+
 ## Useful Heroku Commands
 
 We can look at the logs of our application by running the following command in our project directory:
