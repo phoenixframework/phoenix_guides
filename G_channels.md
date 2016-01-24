@@ -249,6 +249,81 @@ socket = assign(socket, :user, msg["user"])
 
 Sockets store assigned values as a map in `socket.assigns`.
 
+#### Using Token Authentication
+
+When we connect, we'll often need to authenticate the client. Fortunately, this is a fairly easy 4-step process with `Phoenix.token`. 
+
+Step 1 - Assign Token in Connection:
+
+For example, let's assume that we have an authentication plug, `OurAuth`, in our app which has already been used to authenticate the user's session and assign a `:current_user`. Since the current user exists we can simply assign the user's token in the connection for use in the layout. To do so, in our "web/router.ex": we'll need to add the `OurAuth` plug and make the assignment, as follows:
+
+```elixir
+pipeline :browser do
+  ...
+  plug OurAuth
+  plug :put_user_token
+end
+
+defp put_user_token(conn, _) do
+  if current_user = conn.assigns[:current_user] do
+    token = Phoenix.Token.sign(conn, "user socket", current_user.id)
+    assign(conn, :user_token, token)
+  else
+    conn
+  end
+end
+```
+
+Now our `conn.assigns` contains the `current_user` and `user_token`.
+
+Step 2 - Pass Token to JS:
+
+Next we need to pass this token to JavaScript. We can do so inside a script tag in `web/templates/layout/app.html.eex`, as follows:
+
+```html
+    <script>window.userToken = "<%%= assigns[:user_token] %>";</script>
+```
+
+Step 3 - Pass Token to Socket Constructor & Verify:
+
+We also need to pass the `:params` to the socket constructor and verify the user token in the `connect/2` function. To do so, edit `web/channels/user_socket.ex`, as follows:
+
+```elixir
+def connect(%{"token" => token}, socket) do
+  # max_age: 1209600 is equivalent to two weeks in seconds
+  case Phoenix.Token.verify(socket, "user socket", token, max_age: 1209600) do
+    {:ok, user_id} ->
+      XXXXXX
+      {:ok, assign(socket, :current_user, user_id)}
+    {:error, reason} ->
+      :error
+  end
+end
+```
+
+With the above code we've used `Phoenix.Token.verify` to verify the user token provided by the client. If the token is successfully verified, then the `user_id` is assigned values as a map in `socket.assigns`, and the socket connection can be established. If not, then te connection is denied and `:error` is returned.
+
+Step 4 - Pass Token on Connect:
+
+Finally, we need to pass the token on connect as below, or remove it from connect if we don't care about authentication.
+
+```javascript
+socket.connect()
+```
+
+Now that we are connected, we can join channels with a topic:
+
+```elixir
+let channel = socket.channel("topic:subtopic", {})
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+
+export default socket
+```
+
+Note that token authentication is preferable since it's transport agnostic and well-suited for long running-connections like channels, as opposed to using sessions or authentication apporaches.
+
 #### Example Application
 To see an example of the application we just built, checkout this project (https://github.com/chrismccord/phoenix_chat_example).
 
