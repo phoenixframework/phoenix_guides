@@ -176,6 +176,14 @@ Setting config vars and restarting mysterious-meadow-6277... done, v3
 SECRET_KEY_BASE: xvafzY4y01jYuzLm3ecJqo008dVnU3CN4f+MamNd1Zue4pXvfvUjbiXT8akaIF53
 ```
 
+## Setting the Run Command
+
+The elixir buildpack will run `mix run --no-halt` by default to start your server. However, we want to start Cowboy when we deploy so we'll need to create a Procfile, which is a manifest used by Heroku to configure your app's start commands. Add the Procfile to the root of your project:
+
+```console
+echo "web: mix phoenix.server" > Procfile
+```
+
 ## Deploy Time!
 
 Our project is now ready to be deployed on Heroku.
@@ -183,8 +191,8 @@ Our project is now ready to be deployed on Heroku.
 Let's commit all our changes:
 
 ```
-$ git add config/prod.exs
-$ git commit -m "Use production config from Heroku ENV variables"
+$ git add config/prod.exs Procfile
+$ git commit -m "Set up production config for Heroku and indicate how to start the server"
 ```
 
 And deploy:
