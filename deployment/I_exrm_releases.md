@@ -268,7 +268,7 @@ drwxrwxr-x 3 sashaafm sashaafm     4096 Mar  1 10:29 ..
 -rw-rw-r-- 1 sashaafm sashaafm      430 Mar  1 10:29 vm.args
 ```
 
-If you check the contents of the `sys.config` file, we'll see all the variables our application needs to run properly. Configurations for external applications will also be stored here and you may check this file to see if the release was generated with the proper keys and values (notice the `port` field and its value).
+If you check the contents of the `sys.config` file, we'll see all the variables our application needs to run properly. Configurations for external applications will also be stored here and you may check this file to see if the release was generated with the proper keys and values (notice the `port` field and its value as well as our application's database production configurations).
 
 ```console
 $ cat rel/hello_phoenix/releases/0.0.1/sys.config
@@ -308,7 +308,7 @@ Before deploying our release, we should make sure that it runs. To do that, we w
 
 Note: Since we are building a production release - we set our mix environment to "prod" when we created it - we should exercise a little extra caution.
 
-External dependencies will use their production configuration values. Applications will try to communicate with production databases, production Amazon S3 buckets, production message queues, and anything else which has a production configuration.
+External dependencies will use their production configuration values (stored in the `sys.config` file we've seen earlier). Applications will try to communicate with production databases, production Amazon S3 buckets, production message queues, and anything else which has a production configuration.
 
 Some of these might be unreachable from the build environment, which will cause errors. Some might interact with important production data. Please be careful.
 
@@ -318,14 +318,16 @@ With all that in mind, let's start up a console.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix console
-Exec: /Users/lance/work/hello_phoenix/rel/hello_phoenix/erts-6.0/bin/erlexec -boot /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /Users/lance/work/hello_phoenix/rel/hello_phoenix/erts-6.0/../lib -env ERL_LIBS /Users/lance/work/hello_phoenix/rel/hello_phoenix/lib -config /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/sys.config -pa /Users/lance/work/hello_phoenix/rel/hello_phoenix/lib/consolidated -args_file /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
-Root: /Users/lance/work/hello_phoenix/rel/hello_phoenix
-/Users/lance/work/hello_phoenix/rel/hello_phoenix
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+mkdir: created directory ‘/home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config’
+Exec: /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/bin/erlexec -boot /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/../lib -env ERL_LIBS /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/lib -config /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config/sys.config -pa /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/lib/hello_phoenix-0.0.1/consolidated -args_file /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
+Root: /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix
+/home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-[debug] Running HelloPhoenix.Endpoint with Cowboy on port 4000 (http)
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+10:46:54.703 [info] Running HelloPhoenix.Endpoint with Cowboy using http on port 8888
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@LXLE)1> 
 ```
 
 This is the point where our application will crash if it fails to start a child application. If all goes well, however, we should end up at an `iex` prompt. We should also see our app running at [http://localhost:8888/](http://localhost:8888/).
@@ -336,13 +338,15 @@ One thing we can do is start the release without a console session. Let's try ru
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ```
-And we see . . . nothing except that our prompt comes right back. This is ok!
+And we see . . . nothing except a usage message and that our prompt comes right back. This is ok!
 
 We can check to make sure that the release really is ok by pinging it.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 Great, it's responding.
@@ -351,10 +355,11 @@ Now let's try connecting a console to the running release with the `remote_conso
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@LXLE)1> 
 ```
 
 That worked. At this point, we can run any commands we might normally run in a console session.
@@ -363,6 +368,7 @@ Ok, let's get out of this session by hitting `ctrl-c` twice again. What happens 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 
@@ -374,6 +380,7 @@ One way is to simply issue the `stop` command.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix stop
+using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ok
 ```
 
@@ -381,7 +388,8 @@ That looks promising. What happens if we ping the server again?
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Node 'hello_phoenix@127.0.0.1' not responding to pings.
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@LXLE not responding to pings.
 ```
 Success.
 
@@ -389,17 +397,19 @@ Ok, let's re-start our release and establish a remote console to try the other w
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@LXLE)1> 
 ```
 
 Great. Now at the prompt, let's issue this command `:init.stop`.
 
 ```console
-iex(hello_phoenix@127.0.0.1)1> :init.stop
+iex(hello_phoenix@LXLE)1> :init.stop
 :ok
 ```
 
@@ -407,7 +417,8 @@ Then let's hit `ctrl-c` twice again to exit our iex session and ping the server 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Node 'hello_phoenix@127.0.0.1' not responding to pings.
+Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@LXLE not responding to pings.
 ```
 
 As we expected, the server is now down.
@@ -419,18 +430,18 @@ Congratulations! Now that we've interacted a bit with our release locally, we're
 There are many ways for us to get our tarballed release to our hosting environment. In our example, we'll use SCP to upload to a remote server.
 
 ```console
-$ scp -i ~/.ssh/id_rsa.pub rel/hello_phoenix-0.0.1.tar.gz ubuntu@hostname.com:/home/ubuntu
-hello_phoenix-0.0.1.tar.gz                100%   18MB  80.0KB/s   03:48
+$ scp -i ~/.ssh/id_rsa.pub rel/hello_phoenix/releases/0.0.1/hello_phoenix.tar.gz root@hostname:/home
+hello_phoenix.tar.gz                                                   100%   27MB   6.8MB/s   00:04 
 ```
 
 Let's SSH into that environment to set our application up.
 
 ```console
-$ ssh -i ~/.ssh/id_rsa.pub ubuntu@hostname.com
+$ ssh -i ~/.ssh/id_rsa.pub root@hostname.com
 $ sudo mkdir -p /app
-$ sudo chown ubuntu:ubuntu /app
+$ sudo chown root:root /app
 $ cd /app
-$ tar xfz /home/ubuntu/hello_phoenix-0.0.1.tar.gz
+$ tar xfz /home/hello_phoenix.tar.gz
 ```
 
 ## Making Our Application Public
