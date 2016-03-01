@@ -539,4 +539,79 @@ server{
 
 Like our `upstart` script, this nginx config is basic. Look to the [nginx wiki](https://www.nginx.com/resources/wiki/) for steps to configure any more involved features. Restart nginx with `sudo service nginx restart` to load our new config.
 
-At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point.
+At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point. We can also check the localhost to make sure the application is running.
+
+```
+$ curl http://127.0.0.1:8888
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hello HelloPhoenix!</title>
+    <link rel="stylesheet" href="/css/app.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="header">
+        <nav role="navigation">
+          <ul class="nav nav-pills pull-right">
+            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+          </ul>
+        </nav>
+        <span class="logo"></span>
+      </header>
+
+      <p class="alert alert-info" role="alert"></p>
+      <p class="alert alert-danger" role="alert"></p>
+
+      <main role="main">
+        <div class="jumbotron">
+  <h2>Welcome to Phoenix!</h2>
+  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+</div>
+
+<div class="row marketing">
+  <div class="col-lg-6">
+    <h4>Resources</h4>
+    <ul>
+      <li>
+        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+      </li>
+      <li>
+        <a href="http://hexdocs.pm/phoenix">Docs</a>
+      </li>
+      <li>
+        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-6">
+    <h4>Help</h4>
+    <ul>
+      <li>
+        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
+      </li>
+      <li>
+        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+      </main>
+
+    </div> <!-- /container -->
+    <script src="/js/app.js"></script>
+  </body>
+</html>
+```
