@@ -141,8 +141,8 @@ Consolidated protocols written to _build/prod/consolidated
 ==> Conform: No schema found, conform will not be packaged in this release!
 ==> Generating release...
 ==> Generating nodetool...
-==> Packaging release...
 ==> The release for hello_phoenix-0.0.1 is ready!
+==> You can boot a console running your release with `$ rel/hello_phoenix/bin/hello_phoenix console`
 ```
 
 There are a couple of interesting things to note here.
@@ -165,88 +165,142 @@ Everything related to our releases is in the `rel/hello_phoenix` directory. Let'
 
 ```console
 $ ls -la rel/hello_phoenix/
-total 27216
-drwxr-xr-x   7 lance  staff       238 May 13 18:47 .
-drwxr-xr-x   3 lance  staff       102 May 13 18:47 ..
-drwxr-xr-x   6 lance  staff       204 May 13 18:47 bin
-drwxr-xr-x   8 lance  staff       272 May 13 18:47 erts-6.4
--rw-r--r--   1 lance  staff  13933031 May 13 18:47 hello_phoenix-0.0.1.tar.gz
-drwxr-xr-x  26 lance  staff       884 May 13 18:47 lib
-drwxr-xr-x   5 lance  staff       170 May 13 18:47 releases
+drwxrwxr-x  6 sashaafm sashaafm 4096 Mar  1 10:29 .
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ..
+drwxrwxr-x  2 sashaafm sashaafm 4096 Mar  1 10:29 bin
+drwxrwxr-x  7 sashaafm sashaafm 4096 Mar  1 10:29 erts-7.2
+drwxrwxr-x 27 sashaafm sashaafm 4096 Mar  1 10:29 lib
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 releases
 ```
 
 The `bin` directory contains the generated executables for running our application. The `bin/hello_phoenix` executable is what we will use to issue commands to our application.
 
 ```console
 $ ls -la rel/hello_phoenix/bin
-total 80
-drwxr-xr-x  6 lance  staff    204 May 13 18:47 .
-drwxr-xr-x  7 lance  staff    238 May 13 18:47 ..
--rwxr-xr-x  1 lance  staff  13868 May 13 18:47 hello_phoenix
--rw-r--r--  1 lance  staff   4400 May 13 18:47 install_upgrade.escript
--rwxr-xr-x  1 lance  staff   5373 May 13 18:47 nodetool
--rw-r--r--  1 lance  staff   5283 Apr 18  2014 start_clean.boot
+total 40
+drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 .
+drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
+-rwx------ 1 sashaafm sashaafm  391 Mar  1 10:29 hello_phoenix
+-rwx------ 1 sashaafm sashaafm  999 Mar  1 10:29 hello_phoenix.bat
+-rw-r--r-- 1 sashaafm sashaafm 5996 Mar  1 10:29 install_upgrade.escript
+-rwx------ 1 sashaafm sashaafm 5373 Mar  1 10:29 nodetool
+-rw-rw-r-- 1 sashaafm sashaafm 5323 Mar  1 10:29 start_clean.boot
 ```
 
-The `erts-6.4` directory contains all necessary files for the Erlang runtime system, pulled from our build environment.
+The `erts-7.2` directory contains all necessary files for the Erlang runtime system, pulled from our build environment.
 
 ```console
-$ ls -la rel/hello_phoenix/erts-6.3/
-total 8
-drwxr-xr-x   8 lance  staff  272 May 13 18:47 .
-drwxr-xr-x   7 lance  staff  238 May 13 18:47 ..
-drwxr-xr-x  24 lance  staff  816 May 13 18:47 bin
-drwxr-xr-x  12 lance  staff  408 May 13 18:47 include
-drwxr-xr-x   5 lance  staff  170 May 13 18:47 lib
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 src
+$ ls -la rel/hello_phoenix/erts-7.2/
+total 32
+drwxrwxr-x 7 sashaafm sashaafm 4096 Mar  1 10:29 .
+drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 bin
+drwxrwxr-x 4 sashaafm sashaafm 4096 Mar  1 10:29 doc
+drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 include
+-rw-r--r-- 1 sashaafm sashaafm   88 Dez 18 13:12 info
+drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 lib
+drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 src
 ```
 
 The `lib` directory contains the compiled BEAM files for our application and all of our dependencies. This is where all of our work goes.
 
 ```console
 $ ls -la rel/hello_phoenix/lib/
-otal 0
-drwxr-xr-x  26 lance  staff  884 May 13 18:47 .
-drwxr-xr-x   7 lance  staff  238 May 13 18:47 ..
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 compiler-5.0
-drwxr-xr-x  16 lance  staff  544 May 13 18:47 consolidated
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 cowboy-1.0.0
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 cowlib-1.0.1
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 crypto-3.3
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 decimal-1.1.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 ecto-0.11.2
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 eex-1.0.4
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 elixir-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 hello_phoenix-0.0.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 iex-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 kernel-3.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 logger-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 phoenix-0.13.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 phoenix_ecto-0.4.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 phoenix_html-1.0.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 plug-0.12.2
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 poison-1.4.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 poolboy-1.5.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 postgrex-0.8.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 ranch-1.0.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 sasl-2.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 stdlib-2.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 syntax_tools-1.6.14
+total 108
+drwxrwxr-x 27 sashaafm sashaafm 4096 Mar  1 10:29 .
+drwxrwxr-x  6 sashaafm sashaafm 4096 Mar  1 10:29 ..
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 compiler-6.0.2
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 connection-1.0.2
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 cowboy-1.0.4
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 cowlib-1.0.2
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 crypto-3.6.2
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 db_connection-0.2.4
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 decimal-1.1.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ecto-1.1.4
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 eex-1.2.0
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 elixir-1.2.0
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 gettext-0.10.0
+drwxrwxr-x  5 sashaafm sashaafm 4096 Mar  1 10:29 hello_phoenix-0.0.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 iex-1.2.0
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 kernel-4.1.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 logger-1.2.0
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 phoenix-1.1.4
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 phoenix_ecto-2.0.1
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 phoenix_html-2.5.0
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 plug-1.1.2
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 poison-1.5.2
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 poolboy-1.5.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 postgrex-0.11.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ranch-1.2.1
+drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 sasl-2.6.1
+drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 stdlib-2.7
 ```
 
 The `releases` directory is the home for our releases - any release-dependent configurations and scripts that Exrm finds necessary for running our application. If we have multiple versions of our application, and if we have created releases for them, we will have multiple releases in the `releases` directory.
 
 ```console
 $ ls -la rel/hello_phoenix/releases/
-total 16
-drwxr-xr-x  5 lance  staff   170 May 13 18:47 .
-drwxr-xr-x  7 lance  staff   238 May 13 18:47 ..
-drwxr-xr-x  8 lance  staff   272 May 13 18:47 0.0.1
--rw-r--r--  1 lance  staff  1241 May 13 18:47 RELEASES
--rw-r--r--  1 lance  staff     9 May 13 18:47 start_erl.data
+total 20
+drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 .
+drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 0.0.1
+-rw-rw-r-- 1 sashaafm sashaafm 1365 Mar  1 10:29 RELEASES
+-rw-rw-r-- 1 sashaafm sashaafm    9 Mar  1 10:29 start_erl.data
+
 ```
 
-The `hello_phoenix-0.0.1.tar.gz` tarball in `rel/hello_phoenix` is our release in archive form, ready to be shipped off to our hosting environment.
+Inside `0.0.1` are our release specific configurations and scripts for running that particular version.
+
+```console
+$ ls -la rel/hello_phoenix/releases/0.0.1
+total 28288
+drwxrwxr-x 2 sashaafm sashaafm     4096 Mar  1 10:29 .
+drwxrwxr-x 3 sashaafm sashaafm     4096 Mar  1 10:29 ..
+-rwx------ 1 sashaafm sashaafm     7530 Mar  1 10:29 hello_phoenix.bat
+-rw-rw-r-- 1 sashaafm sashaafm    57500 Mar  1 10:29 hello_phoenix.boot
+-rw-rw-r-- 1 sashaafm sashaafm      786 Mar  1 10:29 hello_phoenix.rel
+-rw-rw-r-- 1 sashaafm sashaafm    79521 Mar  1 10:29 hello_phoenix.script
+-rwx------ 1 sashaafm sashaafm    20610 Mar  1 10:29 hello_phoenix.sh
+-rw-rw-r-- 1 sashaafm sashaafm 28698106 Mar  1 10:29 hello_phoenix.tar.gz
+-rw-rw-r-- 1 sashaafm sashaafm    57500 Mar  1 10:29 start.boot
+-rw-rw-r-- 1 sashaafm sashaafm     5323 Mar  1 10:29 start_clean.boot
+-rw-rw-r-- 1 sashaafm sashaafm     1103 Mar  1 10:29 sys.config
+-rw-rw-r-- 1 sashaafm sashaafm      430 Mar  1 10:29 vm.args
+```
+
+If you check the contents of the `sys.config` file, we'll see all the variables our application needs to run properly. Configurations for external applications will also be stored here and you may check this file to see if the release was generated with the proper keys and values (notice the `port` field and its value).
+
+```console
+$ cat rel/hello_phoenix/releases/0.0.1/sys.config
+[{sasl,[{errlog_type,error}]},
+ {logger,
+     [{console,
+          [{format,<<"$time $metadata[$level] $message\n">>},
+           {metadata,[request_id]}]},
+      {level,info}]},
+ {hello_phoenix,
+     [{'Elixir.HelloPhoenix.Endpoint',
+          [{root,<<"/home/sashaafm/Documents/hello_phoenix">>},
+           {render_errors,[{accepts,[<<"html">>,<<"json">>]}]},
+           {pubsub,
+               [{name,'Elixir.HelloPhoenix.PubSub'},
+                {adapter,'Elixir.Phoenix.PubSub.PG2'}]},
+           {http,[{port,8888}]},
+           {url,[{host,<<"example.com">>},{port,80}]},
+           {cache_static_manifest,<<"priv/static/manifest.json">>},
+           {server,true},
+           {secret_key_base,
+               <<"NiAnomfs7/Xz8zf2APHJeU8K8wC4Ls0M8OdpNbjM0/vtUdwKa6gMMfBzERpFmJPY">>}]},
+      {'Elixir.HelloPhoenix.Repo',
+          [{adapter,'Elixir.Ecto.Adapters.Postgres'},
+           {username,<<"postgres">>},
+           {password,<<"postgres">>},
+           {database,<<"hello_phoenix_prod">>},
+           {pool_size,20}]}]},
+ {phoenix,[{generators,[{migration,true},{binary_id,false}]}]}].
+```
+
+The `hello_phoenix.tar.gz` tarball in `rel/hello_phoenix/releases/0.0.1` is our release in archive form, ready to be shipped off to our hosting environment.
 
 ### Testing Our Release
 
