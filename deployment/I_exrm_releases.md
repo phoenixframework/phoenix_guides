@@ -539,7 +539,7 @@ server{
 
 Like our `upstart` script, this nginx config is basic. Look to the [nginx wiki](https://www.nginx.com/resources/wiki/) for steps to configure any more involved features. Restart nginx with `sudo service nginx restart` to load our new config.
 
-At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point. We can also check the localhost to make sure the application is running.
+At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point. We can also check the `localhost` to make sure the application is running.
 
 ```
 $ curl http://127.0.0.1:8888
