@@ -233,12 +233,12 @@ Within the body of the `show` action, we also pass a third argument into the ren
 > Note: If the body of the action needs access to the full map of parameters bound to the params variable in addition to the bound messenger variable, we could define `show/2` like this:
 
 ```elixir
-def show(conn, %{"messenger" => messenger} = params) do
+def show(conn, %{"messenger" => messenger} = _params) do
   ...
 end
 ```
 
-It's good to remember that the keys to the `params` map will always be strings, and that the equals sign does not represent assignment, but is instead a [pattern match](http://elixir-lang.org/getting-started/pattern-matching.html) assertion.
+It's good to remember that the keys to the `_params` map will always be strings, and that the equals sign does not represent assignment, but is instead a [pattern match](http://elixir-lang.org/getting-started/pattern-matching.html) assertion.
 
 ### A New Template
 
