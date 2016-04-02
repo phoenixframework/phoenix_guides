@@ -82,6 +82,14 @@ Buildpack added. Next release on mysterious-meadow-6277 will use:
 Run `git push heroku master` to create a new release using these buildpacks.
 ```
 
+### Deploying Without Static Assets
+
+For deployments that don't require static assets (eg. APIs), adding only the Elixir buildpack is sufficient. However, you will need to provide Heroku with a command to run to start the server. This can be done via the Procfile.
+
+```console
+echo "web: mix phoenix.server" > Procfile
+```
+
 ## Making our Project Heroku-ready
 
 Every new Phoenix project ships with a config file `config/prod.secret.exs` which stores configuration that should not be commited along with our source code. By default Phoenix adds it to our `.gitignore` file.
@@ -176,14 +184,6 @@ Setting config vars and restarting mysterious-meadow-6277... done, v3
 SECRET_KEY_BASE: xvafzY4y01jYuzLm3ecJqo008dVnU3CN4f+MamNd1Zue4pXvfvUjbiXT8akaIF53
 ```
 
-## Setting the Run Command
-
-The elixir buildpack will run `mix run --no-halt` by default to start your server. However, we want to start Cowboy when we deploy so we'll need to create a Procfile, which is a manifest used by Heroku to configure your app's start commands. Add the Procfile to the root of your project:
-
-```console
-echo "web: mix phoenix.server" > Procfile
-```
-
 ## Deploy Time!
 
 Our project is now ready to be deployed on Heroku.
@@ -191,9 +191,11 @@ Our project is now ready to be deployed on Heroku.
 Let's commit all our changes:
 
 ```
-$ git add config/prod.exs Procfile
-$ git commit -m "Set up production config for Heroku and indicate how to start the server"
+$ git add config/prod.exs
+$ git commit -m "Use production config from Heroku ENV variables"
 ```
+
+If you are deploying to Heroku using your own Procfile, you will want to commit that file as well.
 
 And deploy:
 
