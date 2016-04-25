@@ -165,12 +165,12 @@ Everything related to our releases is in the `rel/hello_phoenix` directory. Let'
 
 ```console
 $ ls -la rel/hello_phoenix/
-drwxrwxr-x  6 sashaafm sashaafm 4096 Mar  1 10:29 .
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ..
-drwxrwxr-x  2 sashaafm sashaafm 4096 Mar  1 10:29 bin
-drwxrwxr-x  7 sashaafm sashaafm 4096 Mar  1 10:29 erts-7.2
-drwxrwxr-x 27 sashaafm sashaafm 4096 Mar  1 10:29 lib
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 releases
+drwxrwxr-x  6 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x  2 your_username your_username 4096 Mar  1 10:29 bin
+drwxrwxr-x  7 your_username your_username 4096 Mar  1 10:29 erts-7.2
+drwxrwxr-x 27 your_username your_username 4096 Mar  1 10:29 lib
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 releases
 ```
 
 The `bin` directory contains the generated executables for running our application. The `bin/hello_phoenix` executable is what we will use to issue commands to our application.
@@ -178,13 +178,13 @@ The `bin` directory contains the generated executables for running our applicati
 ```console
 $ ls -la rel/hello_phoenix/bin
 total 40
-drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 .
-drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
--rwx------ 1 sashaafm sashaafm  391 Mar  1 10:29 hello_phoenix
--rwx------ 1 sashaafm sashaafm  999 Mar  1 10:29 hello_phoenix.bat
--rw-r--r-- 1 sashaafm sashaafm 5996 Mar  1 10:29 install_upgrade.escript
--rwx------ 1 sashaafm sashaafm 5373 Mar  1 10:29 nodetool
--rw-rw-r-- 1 sashaafm sashaafm 5323 Mar  1 10:29 start_clean.boot
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+-rwx------ 1 your_username your_username  391 Mar  1 10:29 hello_phoenix
+-rwx------ 1 your_username your_username  999 Mar  1 10:29 hello_phoenix.bat
+-rw-r--r-- 1 your_username your_username 5996 Mar  1 10:29 install_upgrade.escript
+-rwx------ 1 your_username your_username 5373 Mar  1 10:29 nodetool
+-rw-rw-r-- 1 your_username your_username 5323 Mar  1 10:29 start_clean.boot
 ```
 
 The `erts-7.2` directory contains all necessary files for the Erlang runtime system, pulled from our build environment.
@@ -192,14 +192,14 @@ The `erts-7.2` directory contains all necessary files for the Erlang runtime sys
 ```console
 $ ls -la rel/hello_phoenix/erts-7.2/
 total 32
-drwxrwxr-x 7 sashaafm sashaafm 4096 Mar  1 10:29 .
-drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
-drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 bin
-drwxrwxr-x 4 sashaafm sashaafm 4096 Mar  1 10:29 doc
-drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 include
--rw-r--r-- 1 sashaafm sashaafm   88 Dez 18 13:12 info
-drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 lib
-drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 src
+drwxrwxr-x 7 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 bin
+drwxrwxr-x 4 your_username your_username 4096 Mar  1 10:29 doc
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 include
+-rw-r--r-- 1 your_username your_username   88 Dez 18 13:12 info
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 lib
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 src
 ```
 
 The `lib` directory contains the compiled BEAM files for our application and all of our dependencies. This is where all of our work goes.
@@ -207,33 +207,33 @@ The `lib` directory contains the compiled BEAM files for our application and all
 ```console
 $ ls -la rel/hello_phoenix/lib/
 total 108
-drwxrwxr-x 27 sashaafm sashaafm 4096 Mar  1 10:29 .
-drwxrwxr-x  6 sashaafm sashaafm 4096 Mar  1 10:29 ..
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 compiler-6.0.2
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 connection-1.0.2
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 cowboy-1.0.4
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 cowlib-1.0.2
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 crypto-3.6.2
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 db_connection-0.2.4
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 decimal-1.1.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ecto-1.1.4
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 eex-1.2.0
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 elixir-1.2.0
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 gettext-0.10.0
-drwxrwxr-x  5 sashaafm sashaafm 4096 Mar  1 10:29 hello_phoenix-0.0.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 iex-1.2.0
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 kernel-4.1.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 logger-1.2.0
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 phoenix-1.1.4
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 phoenix_ecto-2.0.1
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 phoenix_html-2.5.0
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 plug-1.1.2
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 poison-1.5.2
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 poolboy-1.5.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 postgrex-0.11.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 ranch-1.2.1
-drwxrwxr-x  3 sashaafm sashaafm 4096 Mar  1 10:29 sasl-2.6.1
-drwxrwxr-x  4 sashaafm sashaafm 4096 Mar  1 10:29 stdlib-2.7
+drwxrwxr-x 27 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x  6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 compiler-6.0.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 connection-1.0.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 cowboy-1.0.4
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 cowlib-1.0.2
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 crypto-3.6.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 db_connection-0.2.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 decimal-1.1.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ecto-1.1.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 eex-1.2.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 elixir-1.2.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 gettext-0.10.0
+drwxrwxr-x  5 your_username your_username 4096 Mar  1 10:29 hello_phoenix-0.0.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 iex-1.2.0
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 kernel-4.1.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 logger-1.2.0
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 phoenix-1.1.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 phoenix_ecto-2.0.1
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 phoenix_html-2.5.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 plug-1.1.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 poison-1.5.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 poolboy-1.5.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 postgrex-0.11.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ranch-1.2.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 sasl-2.6.1
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 stdlib-2.7
 ```
 
 The `releases` directory is the home for our releases - any release-dependent configurations and scripts that Exrm finds necessary for running our application. If we have multiple versions of our application, and if we have created releases for them, we will have multiple releases in the `releases` directory.
@@ -241,11 +241,11 @@ The `releases` directory is the home for our releases - any release-dependent co
 ```console
 $ ls -la rel/hello_phoenix/releases/
 total 20
-drwxrwxr-x 3 sashaafm sashaafm 4096 Mar  1 10:29 .
-drwxrwxr-x 6 sashaafm sashaafm 4096 Mar  1 10:29 ..
-drwxrwxr-x 2 sashaafm sashaafm 4096 Mar  1 10:29 0.0.1
--rw-rw-r-- 1 sashaafm sashaafm 1365 Mar  1 10:29 RELEASES
--rw-rw-r-- 1 sashaafm sashaafm    9 Mar  1 10:29 start_erl.data
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 0.0.1
+-rw-rw-r-- 1 your_username your_username 1365 Mar  1 10:29 RELEASES
+-rw-rw-r-- 1 your_username your_username    9 Mar  1 10:29 start_erl.data
 
 ```
 
@@ -254,18 +254,18 @@ Inside `0.0.1` are our release specific configurations and scripts for running t
 ```console
 $ ls -la rel/hello_phoenix/releases/0.0.1
 total 28288
-drwxrwxr-x 2 sashaafm sashaafm     4096 Mar  1 10:29 .
-drwxrwxr-x 3 sashaafm sashaafm     4096 Mar  1 10:29 ..
--rwx------ 1 sashaafm sashaafm     7530 Mar  1 10:29 hello_phoenix.bat
--rw-rw-r-- 1 sashaafm sashaafm    57500 Mar  1 10:29 hello_phoenix.boot
--rw-rw-r-- 1 sashaafm sashaafm      786 Mar  1 10:29 hello_phoenix.rel
--rw-rw-r-- 1 sashaafm sashaafm    79521 Mar  1 10:29 hello_phoenix.script
--rwx------ 1 sashaafm sashaafm    20610 Mar  1 10:29 hello_phoenix.sh
--rw-rw-r-- 1 sashaafm sashaafm 28698106 Mar  1 10:29 hello_phoenix.tar.gz
--rw-rw-r-- 1 sashaafm sashaafm    57500 Mar  1 10:29 start.boot
--rw-rw-r-- 1 sashaafm sashaafm     5323 Mar  1 10:29 start_clean.boot
--rw-rw-r-- 1 sashaafm sashaafm     1103 Mar  1 10:29 sys.config
--rw-rw-r-- 1 sashaafm sashaafm      430 Mar  1 10:29 vm.args
+drwxrwxr-x 2 your_username your_username     4096 Mar  1 10:29 .
+drwxrwxr-x 3 your_username your_username     4096 Mar  1 10:29 ..
+-rwx------ 1 your_username your_username     7530 Mar  1 10:29 hello_phoenix.bat
+-rw-rw-r-- 1 your_username your_username    57500 Mar  1 10:29 hello_phoenix.boot
+-rw-rw-r-- 1 your_username your_username      786 Mar  1 10:29 hello_phoenix.rel
+-rw-rw-r-- 1 your_username your_username    79521 Mar  1 10:29 hello_phoenix.script
+-rwx------ 1 your_username your_username    20610 Mar  1 10:29 hello_phoenix.sh
+-rw-rw-r-- 1 your_username your_username 28698106 Mar  1 10:29 hello_phoenix.tar.gz
+-rw-rw-r-- 1 your_username your_username    57500 Mar  1 10:29 start.boot
+-rw-rw-r-- 1 your_username your_username     5323 Mar  1 10:29 start_clean.boot
+-rw-rw-r-- 1 your_username your_username     1103 Mar  1 10:29 sys.config
+-rw-rw-r-- 1 your_username your_username      430 Mar  1 10:29 vm.args
 ```
 
 If you check the contents of the `sys.config` file, we'll see all the variables our application needs to run properly. Configurations for external applications will also be stored here and you may check this file to see if the release was generated with the proper keys and values (notice the `port` field and its value as well as our application's database production configurations).
@@ -280,7 +280,7 @@ $ cat rel/hello_phoenix/releases/0.0.1/sys.config
       {level,info}]},
  {hello_phoenix,
      [{'Elixir.HelloPhoenix.Endpoint',
-          [{root,<<"/home/sashaafm/Documents/hello_phoenix">>},
+          [{root,<<"/home/your_username/Documents/hello_phoenix">>},
            {render_errors,[{accepts,[<<"html">>,<<"json">>]}]},
            {pubsub,
                [{name,'Elixir.HelloPhoenix.PubSub'},
@@ -318,16 +318,16 @@ With all that in mind, let's start up a console.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix console
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
-mkdir: created directory ‘/home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config’
-Exec: /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/bin/erlexec -boot /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/../lib -env ERL_LIBS /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/lib -config /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config/sys.config -pa /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/lib/hello_phoenix-0.0.1/consolidated -args_file /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/running-config/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
-Root: /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix
-/home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+mkdir: created directory ‘/home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config’
+Exec: /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/bin/erlexec -boot /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/../lib -env ERL_LIBS /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/lib -config /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config/sys.config -pa /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/lib/hello_phoenix-0.0.1/consolidated -args_file /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
+Root: /home/your_username/Documents/hello_phoenix/rel/hello_phoenix
+/home/your_username/Documents/hello_phoenix/rel/hello_phoenix
 Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
 10:46:54.703 [info] Running HelloPhoenix.Endpoint with Cowboy using http on port 8888
 Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@LXLE)1> 
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 This is the point where our application will crash if it fails to start a child application. If all goes well, however, we should end up at an `iex` prompt. We should also see our app running at [http://localhost:8888/](http://localhost:8888/).
@@ -338,7 +338,7 @@ One thing we can do is start the release without a console session. Let's try ru
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ```
 And we see . . . nothing except a usage message and that our prompt comes right back. This is ok!
 
@@ -346,7 +346,7 @@ We can check to make sure that the release really is ok by pinging it.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 Great, it's responding.
@@ -355,11 +355,11 @@ Now let's try connecting a console to the running release with the `remote_conso
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
 Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@LXLE)1> 
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 That worked. At this point, we can run any commands we might normally run in a console session.
@@ -368,7 +368,7 @@ Ok, let's get out of this session by hitting `ctrl-c` twice again. What happens 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 
@@ -380,7 +380,7 @@ One way is to simply issue the `stop` command.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix stop
-using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ok
 ```
 
@@ -388,8 +388,8 @@ That looks promising. What happens if we ping the server again?
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
-Node hello_phoenix@LXLE not responding to pings.
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@127.0.0.1 not responding to pings.
 ```
 Success.
 
@@ -397,19 +397,19 @@ Ok, let's re-start our release and establish a remote console to try the other w
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
 Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@LXLE)1> 
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 Great. Now at the prompt, let's issue this command `:init.stop`.
 
 ```console
-iex(hello_phoenix@LXLE)1> :init.stop
+iex(hello_phoenix@127.0.0.1)1> :init.stop
 :ok
 ```
 
@@ -417,8 +417,8 @@ Then let's hit `ctrl-c` twice again to exit our iex session and ping the server 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Using /home/sashaafm/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
-Node hello_phoenix@LXLE not responding to pings.
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@127.0.0.1 not responding to pings.
 ```
 
 As we expected, the server is now down.
