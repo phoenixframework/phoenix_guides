@@ -24,7 +24,7 @@ Let's separate our release process into a few tasks so we can keep track of wher
 
 ## Add exrm as a Dependency
 
-To get started, we'll need to add `{:exrm, "~> 0.19.9"}` into the list of dependencies in our `mix.exs` file.
+To get started, we'll need to add `{:exrm, "~> 1.0"}` into the list of dependencies in our `mix.exs` file.
 
 ```elixir
   defp deps do
@@ -34,7 +34,7 @@ To get started, we'll need to add `{:exrm, "~> 0.19.9"}` into the list of depend
      {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:exrm, "~> 0.19.9"}]
+     {:exrm, "~> 1.0"}]
   end
 ```
 
@@ -141,8 +141,8 @@ Consolidated protocols written to _build/prod/consolidated
 ==> Conform: No schema found, conform will not be packaged in this release!
 ==> Generating release...
 ==> Generating nodetool...
-==> Packaging release...
 ==> The release for hello_phoenix-0.0.1 is ready!
+==> You can boot a console running your release with `$ rel/hello_phoenix/bin/hello_phoenix console`
 ```
 
 There are a couple of interesting things to note here.
@@ -165,88 +165,142 @@ Everything related to our releases is in the `rel/hello_phoenix` directory. Let'
 
 ```console
 $ ls -la rel/hello_phoenix/
-total 27216
-drwxr-xr-x   7 lance  staff       238 May 13 18:47 .
-drwxr-xr-x   3 lance  staff       102 May 13 18:47 ..
-drwxr-xr-x   6 lance  staff       204 May 13 18:47 bin
-drwxr-xr-x   8 lance  staff       272 May 13 18:47 erts-6.4
--rw-r--r--   1 lance  staff  13933031 May 13 18:47 hello_phoenix-0.0.1.tar.gz
-drwxr-xr-x  26 lance  staff       884 May 13 18:47 lib
-drwxr-xr-x   5 lance  staff       170 May 13 18:47 releases
+drwxrwxr-x  6 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x  2 your_username your_username 4096 Mar  1 10:29 bin
+drwxrwxr-x  7 your_username your_username 4096 Mar  1 10:29 erts-7.2
+drwxrwxr-x 27 your_username your_username 4096 Mar  1 10:29 lib
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 releases
 ```
 
 The `bin` directory contains the generated executables for running our application. The `bin/hello_phoenix` executable is what we will use to issue commands to our application.
 
 ```console
 $ ls -la rel/hello_phoenix/bin
-total 80
-drwxr-xr-x  6 lance  staff    204 May 13 18:47 .
-drwxr-xr-x  7 lance  staff    238 May 13 18:47 ..
--rwxr-xr-x  1 lance  staff  13868 May 13 18:47 hello_phoenix
--rw-r--r--  1 lance  staff   4400 May 13 18:47 install_upgrade.escript
--rwxr-xr-x  1 lance  staff   5373 May 13 18:47 nodetool
--rw-r--r--  1 lance  staff   5283 Apr 18  2014 start_clean.boot
+total 40
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+-rwx------ 1 your_username your_username  391 Mar  1 10:29 hello_phoenix
+-rwx------ 1 your_username your_username  999 Mar  1 10:29 hello_phoenix.bat
+-rw-r--r-- 1 your_username your_username 5996 Mar  1 10:29 install_upgrade.escript
+-rwx------ 1 your_username your_username 5373 Mar  1 10:29 nodetool
+-rw-rw-r-- 1 your_username your_username 5323 Mar  1 10:29 start_clean.boot
 ```
 
-The `erts-6.4` directory contains all necessary files for the Erlang runtime system, pulled from our build environment.
+The `erts-7.2` directory contains all necessary files for the Erlang runtime system, pulled from our build environment.
 
 ```console
-$ ls -la rel/hello_phoenix/erts-6.3/
-total 8
-drwxr-xr-x   8 lance  staff  272 May 13 18:47 .
-drwxr-xr-x   7 lance  staff  238 May 13 18:47 ..
-drwxr-xr-x  24 lance  staff  816 May 13 18:47 bin
-drwxr-xr-x  12 lance  staff  408 May 13 18:47 include
-drwxr-xr-x   5 lance  staff  170 May 13 18:47 lib
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 src
+$ ls -la rel/hello_phoenix/erts-7.2/
+total 32
+drwxrwxr-x 7 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 bin
+drwxrwxr-x 4 your_username your_username 4096 Mar  1 10:29 doc
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 include
+-rw-r--r-- 1 your_username your_username   88 Dez 18 13:12 info
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 lib
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 src
 ```
 
 The `lib` directory contains the compiled BEAM files for our application and all of our dependencies. This is where all of our work goes.
 
 ```console
 $ ls -la rel/hello_phoenix/lib/
-otal 0
-drwxr-xr-x  26 lance  staff  884 May 13 18:47 .
-drwxr-xr-x   7 lance  staff  238 May 13 18:47 ..
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 compiler-5.0
-drwxr-xr-x  16 lance  staff  544 May 13 18:47 consolidated
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 cowboy-1.0.0
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 cowlib-1.0.1
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 crypto-3.3
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 decimal-1.1.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 ecto-0.11.2
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 eex-1.0.4
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 elixir-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 hello_phoenix-0.0.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 iex-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 kernel-3.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 logger-1.0.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 phoenix-0.13.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 phoenix_ecto-0.4.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 phoenix_html-1.0.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 plug-0.12.2
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 poison-1.4.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 poolboy-1.5.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 postgrex-0.8.1
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 ranch-1.0.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 sasl-2.4
-drwxr-xr-x   4 lance  staff  136 May 13 18:47 stdlib-2.0
-drwxr-xr-x   3 lance  staff  102 May 13 18:47 syntax_tools-1.6.14
+total 108
+drwxrwxr-x 27 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x  6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 compiler-6.0.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 connection-1.0.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 cowboy-1.0.4
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 cowlib-1.0.2
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 crypto-3.6.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 db_connection-0.2.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 decimal-1.1.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ecto-1.1.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 eex-1.2.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 elixir-1.2.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 gettext-0.10.0
+drwxrwxr-x  5 your_username your_username 4096 Mar  1 10:29 hello_phoenix-0.0.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 iex-1.2.0
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 kernel-4.1.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 logger-1.2.0
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 phoenix-1.1.4
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 phoenix_ecto-2.0.1
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 phoenix_html-2.5.0
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 plug-1.1.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 poison-1.5.2
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 poolboy-1.5.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 postgrex-0.11.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 ranch-1.2.1
+drwxrwxr-x  3 your_username your_username 4096 Mar  1 10:29 sasl-2.6.1
+drwxrwxr-x  4 your_username your_username 4096 Mar  1 10:29 stdlib-2.7
 ```
 
 The `releases` directory is the home for our releases - any release-dependent configurations and scripts that Exrm finds necessary for running our application. If we have multiple versions of our application, and if we have created releases for them, we will have multiple releases in the `releases` directory.
 
 ```console
 $ ls -la rel/hello_phoenix/releases/
-total 16
-drwxr-xr-x  5 lance  staff   170 May 13 18:47 .
-drwxr-xr-x  7 lance  staff   238 May 13 18:47 ..
-drwxr-xr-x  8 lance  staff   272 May 13 18:47 0.0.1
--rw-r--r--  1 lance  staff  1241 May 13 18:47 RELEASES
--rw-r--r--  1 lance  staff     9 May 13 18:47 start_erl.data
+total 20
+drwxrwxr-x 3 your_username your_username 4096 Mar  1 10:29 .
+drwxrwxr-x 6 your_username your_username 4096 Mar  1 10:29 ..
+drwxrwxr-x 2 your_username your_username 4096 Mar  1 10:29 0.0.1
+-rw-rw-r-- 1 your_username your_username 1365 Mar  1 10:29 RELEASES
+-rw-rw-r-- 1 your_username your_username    9 Mar  1 10:29 start_erl.data
+
 ```
 
-The `hello_phoenix-0.0.1.tar.gz` tarball in `rel/hello_phoenix` is our release in archive form, ready to be shipped off to our hosting environment.
+Inside `0.0.1` are our release specific configurations and scripts for running that particular version.
+
+```console
+$ ls -la rel/hello_phoenix/releases/0.0.1
+total 28288
+drwxrwxr-x 2 your_username your_username     4096 Mar  1 10:29 .
+drwxrwxr-x 3 your_username your_username     4096 Mar  1 10:29 ..
+-rwx------ 1 your_username your_username     7530 Mar  1 10:29 hello_phoenix.bat
+-rw-rw-r-- 1 your_username your_username    57500 Mar  1 10:29 hello_phoenix.boot
+-rw-rw-r-- 1 your_username your_username      786 Mar  1 10:29 hello_phoenix.rel
+-rw-rw-r-- 1 your_username your_username    79521 Mar  1 10:29 hello_phoenix.script
+-rwx------ 1 your_username your_username    20610 Mar  1 10:29 hello_phoenix.sh
+-rw-rw-r-- 1 your_username your_username 28698106 Mar  1 10:29 hello_phoenix.tar.gz
+-rw-rw-r-- 1 your_username your_username    57500 Mar  1 10:29 start.boot
+-rw-rw-r-- 1 your_username your_username     5323 Mar  1 10:29 start_clean.boot
+-rw-rw-r-- 1 your_username your_username     1103 Mar  1 10:29 sys.config
+-rw-rw-r-- 1 your_username your_username      430 Mar  1 10:29 vm.args
+```
+
+If you check the contents of the `sys.config` file, we'll see all the variables our application needs to run properly. Configurations for external applications will also be stored here and you may check this file to see if the release was generated with the proper keys and values (notice the `port` field and its value as well as our application's database production configurations).
+
+```console
+$ cat rel/hello_phoenix/releases/0.0.1/sys.config
+[{sasl,[{errlog_type,error}]},
+ {logger,
+     [{console,
+          [{format,<<"$time $metadata[$level] $message\n">>},
+           {metadata,[request_id]}]},
+      {level,info}]},
+ {hello_phoenix,
+     [{'Elixir.HelloPhoenix.Endpoint',
+          [{root,<<"/home/your_username/Documents/hello_phoenix">>},
+           {render_errors,[{accepts,[<<"html">>,<<"json">>]}]},
+           {pubsub,
+               [{name,'Elixir.HelloPhoenix.PubSub'},
+                {adapter,'Elixir.Phoenix.PubSub.PG2'}]},
+           {http,[{port,8888}]},
+           {url,[{host,<<"example.com">>},{port,80}]},
+           {cache_static_manifest,<<"priv/static/manifest.json">>},
+           {server,true},
+           {secret_key_base,
+               <<"NiAnomfs7/Xz8zf2APHJeU8K8wC4Ls0M8OdpNbjM0/vtUdwKa6gMMfBzERpFmJPY">>}]},
+      {'Elixir.HelloPhoenix.Repo',
+          [{adapter,'Elixir.Ecto.Adapters.Postgres'},
+           {username,<<"postgres">>},
+           {password,<<"postgres">>},
+           {database,<<"hello_phoenix_prod">>},
+           {pool_size,20}]}]},
+ {phoenix,[{generators,[{migration,true},{binary_id,false}]}]}].
+```
+
+The `hello_phoenix.tar.gz` tarball in `rel/hello_phoenix/releases/0.0.1` is our release in archive form, ready to be shipped off to our hosting environment.
 
 ### Testing Our Release
 
@@ -254,7 +308,7 @@ Before deploying our release, we should make sure that it runs. To do that, we w
 
 Note: Since we are building a production release - we set our mix environment to "prod" when we created it - we should exercise a little extra caution.
 
-External dependencies will use their production configuration values. Applications will try to communicate with production databases, production Amazon S3 buckets, production message queues, and anything else which has a production configuration.
+External dependencies will use their production configuration values (stored in the `sys.config` file we've seen earlier). Applications will try to communicate with production databases, production Amazon S3 buckets, production message queues, and anything else which has a production configuration.
 
 Some of these might be unreachable from the build environment, which will cause errors. Some might interact with important production data. Please be careful.
 
@@ -264,14 +318,16 @@ With all that in mind, let's start up a console.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix console
-Exec: /Users/lance/work/hello_phoenix/rel/hello_phoenix/erts-6.0/bin/erlexec -boot /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /Users/lance/work/hello_phoenix/rel/hello_phoenix/erts-6.0/../lib -env ERL_LIBS /Users/lance/work/hello_phoenix/rel/hello_phoenix/lib -config /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/sys.config -pa /Users/lance/work/hello_phoenix/rel/hello_phoenix/lib/consolidated -args_file /Users/lance/work/hello_phoenix/rel/hello_phoenix/releases/0.0.1/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
-Root: /Users/lance/work/hello_phoenix/rel/hello_phoenix
-/Users/lance/work/hello_phoenix/rel/hello_phoenix
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+mkdir: created directory ‘/home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config’
+Exec: /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/bin/erlexec -boot /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix -boot_var ERTS_LIB_DIR /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/erts-7.2/../lib -env ERL_LIBS /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/lib -config /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config/sys.config -pa /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/lib/hello_phoenix-0.0.1/consolidated -args_file /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/running-config/vm.args -user Elixir.IEx.CLI -extra --no-halt +iex -- console
+Root: /home/your_username/Documents/hello_phoenix/rel/hello_phoenix
+/home/your_username/Documents/hello_phoenix/rel/hello_phoenix
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-[debug] Running HelloPhoenix.Endpoint with Cowboy on port 4000 (http)
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+10:46:54.703 [info] Running HelloPhoenix.Endpoint with Cowboy using http on port 8888
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 This is the point where our application will crash if it fails to start a child application. If all goes well, however, we should end up at an `iex` prompt. We should also see our app running at [http://localhost:8888/](http://localhost:8888/).
@@ -282,13 +338,15 @@ One thing we can do is start the release without a console session. Let's try ru
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ```
-And we see . . . nothing except that our prompt comes right back. This is ok!
+And we see . . . nothing except a usage message and that our prompt comes right back. This is ok!
 
 We can check to make sure that the release really is ok by pinging it.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 Great, it's responding.
@@ -297,10 +355,11 @@ Now let's try connecting a console to the running release with the `remote_conso
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 That worked. At this point, we can run any commands we might normally run in a console session.
@@ -309,6 +368,7 @@ Ok, let's get out of this session by hitting `ctrl-c` twice again. What happens 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 pong
 ```
 
@@ -320,6 +380,7 @@ One way is to simply issue the `stop` command.
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix stop
+using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 ok
 ```
 
@@ -327,7 +388,8 @@ That looks promising. What happens if we ping the server again?
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Node 'hello_phoenix@127.0.0.1' not responding to pings.
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@127.0.0.1 not responding to pings.
 ```
 Success.
 
@@ -335,11 +397,13 @@ Ok, let's re-start our release and establish a remote console to try the other w
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix start
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
 $ rel/hello_phoenix/bin/hello_phoenix remote_console
-Erlang/OTP 17 [erts-6.0] [source-07b8f44] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Erlang/OTP 18 [erts-7.2] [source] [64-bit] [smp:2:2] [async-threads:10] [hipe] [kernel-poll:false]
 
-Interactive Elixir (1.0.2) - press Ctrl+C to exit (type h() ENTER for help)
-iex(hello_phoenix@127.0.0.1)1>
+Interactive Elixir (1.2.0) - press Ctrl+C to exit (type h() ENTER for help)
+iex(hello_phoenix@127.0.0.1)1> 
 ```
 
 Great. Now at the prompt, let's issue this command `:init.stop`.
@@ -353,7 +417,8 @@ Then let's hit `ctrl-c` twice again to exit our iex session and ping the server 
 
 ```console
 $ rel/hello_phoenix/bin/hello_phoenix ping
-Node 'hello_phoenix@127.0.0.1' not responding to pings.
+Using /home/your_username/Documents/hello_phoenix/rel/hello_phoenix/releases/0.0.1/hello_phoenix.sh
+Node hello_phoenix@127.0.0.1 not responding to pings.
 ```
 
 As we expected, the server is now down.
@@ -365,18 +430,18 @@ Congratulations! Now that we've interacted a bit with our release locally, we're
 There are many ways for us to get our tarballed release to our hosting environment. In our example, we'll use SCP to upload to a remote server.
 
 ```console
-$ scp -i ~/.ssh/id_rsa.pub rel/hello_phoenix-0.0.1.tar.gz ubuntu@hostname.com:/home/ubuntu
-hello_phoenix-0.0.1.tar.gz                100%   18MB  80.0KB/s   03:48
+$ scp -i ~/.ssh/id_rsa.pub rel/hello_phoenix/releases/0.0.1/hello_phoenix.tar.gz root@hostname:/home
+hello_phoenix.tar.gz                                                   100%   27MB   6.8MB/s   00:04 
 ```
 
 Let's SSH into that environment to set our application up.
 
 ```console
-$ ssh -i ~/.ssh/id_rsa.pub ubuntu@hostname.com
+$ ssh -i ~/.ssh/id_rsa.pub root@hostname.com
 $ sudo mkdir -p /app
-$ sudo chown ubuntu:ubuntu /app
+$ sudo chown root:root /app
 $ cd /app
-$ tar xfz /home/ubuntu/hello_phoenix-0.0.1.tar.gz
+$ tar xfz /home/hello_phoenix.tar.gz
 ```
 
 ## Making Our Application Public
@@ -474,4 +539,79 @@ server{
 
 Like our `upstart` script, this nginx config is basic. Look to the [nginx wiki](https://www.nginx.com/resources/wiki/) for steps to configure any more involved features. Restart nginx with `sudo service nginx restart` to load our new config.
 
-At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point.
+At this point, we should be able to see our application if we visit `http://hostname.com/` if everything has been successful up to this point. We can also check the `localhost` to make sure the application is running.
+
+```
+$ curl http://127.0.0.1:8888
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hello HelloPhoenix!</title>
+    <link rel="stylesheet" href="/css/app.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="header">
+        <nav role="navigation">
+          <ul class="nav nav-pills pull-right">
+            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+          </ul>
+        </nav>
+        <span class="logo"></span>
+      </header>
+
+      <p class="alert alert-info" role="alert"></p>
+      <p class="alert alert-danger" role="alert"></p>
+
+      <main role="main">
+        <div class="jumbotron">
+  <h2>Welcome to Phoenix!</h2>
+  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+</div>
+
+<div class="row marketing">
+  <div class="col-lg-6">
+    <h4>Resources</h4>
+    <ul>
+      <li>
+        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+      </li>
+      <li>
+        <a href="http://hexdocs.pm/phoenix">Docs</a>
+      </li>
+      <li>
+        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-6">
+    <h4>Help</h4>
+    <ul>
+      <li>
+        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
+      </li>
+      <li>
+        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+      </main>
+
+    </div> <!-- /container -->
+    <script src="/js/app.js"></script>
+  </body>
+</html>
+```
