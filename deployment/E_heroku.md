@@ -379,3 +379,8 @@ always_rebuild=true
 ```
 
 Commit this file to the repository and try to push again to Heroku.
+
+### Heroku  OTP and  ETS
+
+If your application heavily relies on OTP features such as process mailboxes or ETS Heroku may not be the best solution without using a external message broker as as (Kafka)[http://kafka.apache.org/].
+When a new Heroku instance is created mailboxes and processes in memory do not carry over to the new instance.
