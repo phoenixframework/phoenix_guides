@@ -41,8 +41,8 @@ end
 
 ### Configuration
 
-We'll also need to add our SMTP service details to `config/config.ex`. These
-can be got from your SMTP provider, so check your account on there.
+We'll also need to add our SMTP details to `config/config.ex`. These will be
+provided by the SMTP service you signed up to, so check your account on there.
 
 For security reasons, it's important to not commit these values to a public
 source code repository. There are a couple of ways we can accomplish this.
@@ -66,7 +66,7 @@ config :my_app, MyApp.Mailer,
   retries: 1
 ```
 
-These confirm variables will need to be set on the production servers, as well
+These variables will need to be set on the production servers, as well
 as on our development machines. Please see the [Deployment Introduction
 Guide](http://www.phoenixframework.org/docs/deployment) for more information.
 
@@ -234,7 +234,7 @@ defmodule MyApp.Email do
     email_address
     |> welcome_text_email()
     |> html_body("<strong>Welcome<strong> to MyApp!")
-    |> put_text_layout({MyApp.LayoutView, "email.html"})
+    |> put_html_layout({MyApp.LayoutView, "email.html"})
   end
 end
 ```
@@ -275,7 +275,7 @@ defmodule MyApp.Email do
   def welcome_html_email(email_address) do
     email_address
     |> welcome_text_email()
-    |> put_text_layout({MyApp.LayoutView, "email.html"})
+    |> put_html_layout({MyApp.LayoutView, "email.html"})
     |> render("welcome.html")
   end
 end
@@ -314,7 +314,7 @@ defmodule MyApp.Email do
   def welcome_html_email(email_address) do
     email_address
     |> welcome_text_email()
-    |> put_text_layout({MyApp.LayoutView, "email.html"})
+    |> put_html_layout({MyApp.LayoutView, "email.html"})
     |> render("welcome.html", email_address: email_address) # <= Assignments
   end
 end
