@@ -82,6 +82,14 @@ Buildpack added. Next release on mysterious-meadow-6277 will use:
 Run `git push heroku master` to create a new release using these buildpacks.
 ```
 
+### Deploying Without Static Assets
+
+For deployments that don't require static assets (eg. APIs), adding only the Elixir buildpack is sufficient. However, you will need to provide Heroku with a command to run to start the server. This can be done via the Procfile.
+
+```console
+echo "web: mix phoenix.server" > Procfile
+```
+
 ## Making our Project Heroku-ready
 
 Every new Phoenix project ships with a config file `config/prod.secret.exs` which stores configuration that should not be commited along with our source code. By default Phoenix adds it to our `.gitignore` file.
@@ -231,6 +239,8 @@ $ git add Procfile
 $ git add web/channels/user_socket.ex
 $ git commit -m "Use production config from Heroku ENV variables and decrease socket timeout"
 ```
+
+If you are deploying to Heroku using your own Procfile, you will want to commit that file as well.
 
 And deploy:
 
