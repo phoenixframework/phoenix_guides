@@ -419,21 +419,17 @@ At this point, let's see how we can actually use Ecto in our application. Luckil
 
 Let's work through the generated controller action by action to see how Ecto is used.
 
-Before we get to the first action, let's look at two important lines at the top of the file.
+Before we get to the first action, let's look at an important line at the top of the file.
 
 ```elixir
 defmodule HelloPhoenix.UserController do
 . . .
   alias HelloPhoenix.User
-
-  plug :scrub_params, "user" when action in [:create, :update]
 . . .
 end
 ```
 
 We alias `HelloPhoenix.User` so that we can name our structs `%User{}` instead of `%HelloPhoenix.User{}`.
-
-We also plug the `Phoenix.Controller.scrub_params/2` to pre-process our params a bit before they come to an action. `scrub_params/2` does a couple of useful things for us. It makes sure that all of the required fields are present, and raises an error for each that is missing. It will also recursively change any empty strings to nils.
 
 On to our first action, `index`.
 
