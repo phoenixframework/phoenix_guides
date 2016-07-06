@@ -20,7 +20,7 @@ The second important file is `brunch-config.js`. This is configuration for Brunc
 
 According to this configuration Brunch will look for asset source files in `web/static`.
 
-Files and directories in `web/static/assets` will be copied to the destination without changes.
+Files and directories in `web/static/assets` will be copied to the destination without changes. Note that while all directories will be copied, only those will be served over http, which have been whitelisted in Plug.Static configuration, which by default are only the js, css, images and fonts directories.
 
 The `css` and `js` directories inside of `web/static` are a convention. Brunch will simply look for all files in `web/static` excluding `web/static/assets` and sort all found files by their type.
 
