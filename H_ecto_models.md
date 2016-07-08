@@ -308,7 +308,7 @@ In a new `iex -S mix phoenix.server` session, we should alias our module again.
 
 ```console
 iex(1)> alias HelloPhoenix.User
-nil
+HelloPhoenix.User
 ```
 
 Lets create a `params` map with valid values plus an extra `random_key: "random value"`.
