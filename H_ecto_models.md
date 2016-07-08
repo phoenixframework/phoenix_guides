@@ -257,7 +257,7 @@ We can also verify this in iex. Let's stop our server and start it again with `i
 
 ```console
 iex(1)> alias HelloPhoenix.User
-nil
+HelloPhoenix.User
 ```
 
 Then let's create a changeset from our model with an empty `User` struct, and an empty map of parameters.
