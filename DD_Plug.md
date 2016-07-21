@@ -125,6 +125,7 @@ defmodule HelloPhoenix.Plugs.Locale do
 
   def call(%Plug.Conn{params: %{"locale" => loc}} = conn, _default) when loc in @locales do
     assign(conn, :locale, loc)
+    # I am not sure what the right way would be here. This does not work however, bc the conn variable is not known
   end
   def call(conn, default), do: assign(conn, :locale, default)
 end
