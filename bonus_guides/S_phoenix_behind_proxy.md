@@ -28,7 +28,7 @@ config :hello_phoenix, HelloPhoenix.Endpoint,
 . . .
 ```
 
-Urls generated using a `_url` function from the `HelloPhoenix.Router.Helpers` module will include `localhost:port_as_above`. To fix that, you need to add the following `url` option:
+Urls generated using a `_url` function from the `HelloPhoenix.Router.Helpers` module will include a url such as http://localhost:8080/users for `user_url(conn, :index)`. To fix this we can use the `url` option:
 
 ```elixir
 use Mix.Config
@@ -43,7 +43,7 @@ config :hello_phoenix, HelloPhoenix.Endpoint,
 . . .
 ```
 
-The port value is necessary. With port 80 as above, generated links will not include the port explicitly.
+Our url will now be http://example.com/users for the `user_url(conn, :index)` function. Note that the port is not present in the url. If the scheme is `http` and the port is `80`, or the scheme is `https` and the port is `443`, then the port will not be present in the url. In all other circumstances it will be present.
 
 ### Nginx Considerations
 Nginx requires some additional configuration in order to use channels. Websockets, which are based on HTTP requests, operate on the notion that you are _Upgrading_ the connection from standard stateless HTTP to a persistent websocket connection.
