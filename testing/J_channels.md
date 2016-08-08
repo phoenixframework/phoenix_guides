@@ -31,7 +31,7 @@ Add the channel to your `web/channels/user_socket.ex` handler, for example:
     channel "rooms:lobby", HelloPhoenix.RoomChannel
 ```
 
-This creates a channel, its test and instructs us to add a channel route in `web/router.ex`.
+This creates a channel, its test and instructs us to add a channel route in `web/channels/user_socket.ex`.
 It is important to add the channel route or our channel won't function at all!
 
 #### The Channel Test Helpers Module
