@@ -15,7 +15,7 @@ end
 Then, run `mix deps.get` to fetch and compile the new modules and generate the project documentation with `mix docs`. 
 An example output is the [official Elixir Docs](http://elixir-lang.org/docs/stable/elixir/).
 
-
+To serve them immediately use `mix docs --output priv/static/doc` and navigate to `my_app_url_or_ip/doc/index.html`.
 
 **Additional reading:**
 
