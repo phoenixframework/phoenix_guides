@@ -24,8 +24,6 @@ $ mix phoenix.gen.channel Room rooms
 * creating web/channels/room_channel.ex
 * creating test/channels/room_channel_test.exs
 
-Add the channel to a socket scope in web/router.ex:
-
 Add the channel to your `web/channels/user_socket.ex` handler, for example:
 
     channel "rooms:lobby", HelloPhoenix.RoomChannel
