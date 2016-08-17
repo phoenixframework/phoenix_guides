@@ -1,6 +1,16 @@
-The correct invocation of helper modules and functions can be intimidating because these are generated dynamically (for example, when creating a new project or adding a new `resource`) and they are not documented explicitly (e.g., `MyApp.ErrorHelpers.error_tag`) or the documentation does not cover all examples (e.g., `MyApp.Router.Helpers.*_path` in `Phoenix.Router`).
+The correct invocation of helper modules and functions can be intimidating because
+* these are generated dynamically (e.g., when creating a new project or adding a new `resource`)
+* they are not documented explicitly (e.g., `MyApp.ErrorHelpers.error_tag`) 
+* the documentation does not cover all examples (e.g., `MyApp.Router.Helpers.*_path` in `Phoenix.Router`).
 
-To generate documentation from `@doc` and `@moduledoc` attributes in your source code, add `ex_doc` and a markdown processor as dependencies into your `mix.exs` file: 
+Although the created helpers are scattered all over your project but their location follows a solid logic. You can get used to them pretty quick and fortunately, when you generate a project with Phoenix, the code is shipped with documentation via Elixir's `@doc` and `@moduledoc` module attributes.
+
+These docs are not limited to helpers only but you can also
+* see your project broken down by submodules/functions/macros
+* add your own documentation
+* look up any functions that were generated under the namespace of your project (e.g., `MyApp.Repo` contains callback function implementations from `Ecto.Repo`)
+
+To generate documentation from your source code, add `ex_doc` as dependency into your `mix.exs` file: 
 
 ```elixir
 # config/mix.exs
