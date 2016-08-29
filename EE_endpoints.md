@@ -31,7 +31,7 @@ your application. At the end of an endpoint file we can define multiple routers 
 handle the actual routes.
 
 Let's cover some of the elements of an Endpoint layer by layer from outside
-moving inward by lookint at the endpoint.ex in the [Hello
+moving inward by looking at the endpoint.ex in the [Hello
 Phoenix](https://github.com/phoenix-examples/hello_phoenix) sample Phoenix
 application.
 
@@ -74,11 +74,11 @@ A code reloading feature is included into our application which uses a socket
 to communicate that code can be reloaded for development preview.
 
 ```elixir
-if code_reloading? do
-      socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-      plug Phoenix.LiveReloader
-      plug Phoenix.CodeReloader
-end
+  if code_reloading? do
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
+    plug Phoenix.LiveReloader
+    plug Phoenix.CodeReloader
+  end
 ```
 The next section defines a list of separate applications that perform useful
 operations on our request. A logger is enabled. A request ID is generated.
@@ -92,10 +92,10 @@ For example a session cookie is created and signed to ensure request security
 and prevent XSS.
 
 ```elixir
- plug Plug.Session,
-     store: :cookie,
-     key: "_hello_phoenix_key",
-     signing_salt: "change_me"
+  plug Plug.Session,
+    store: :cookie,
+    key: "_hello_phoenix_key",
+    signing_salt: "change_me"
 ```
 Finally by convention the router for our application is included where the request
 will be routed to the appropriate place within your code.
@@ -128,9 +128,3 @@ unexpected faults.
 
 Read the complete [Endpoint
 API](https://hexdocs.pm/phoenix/Phoenix.Endpoint.html) on hexdocs.
-
-
-
-
-
-
