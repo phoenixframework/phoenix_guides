@@ -705,4 +705,22 @@ defmodule HelloPhoenix do
 end
 ```
 
+At last we want to be able to generate new models via [mix tasks](http://www.phoenixframework.org/docs/mix-tasks#section--mix-phoenix-gen-model-). Generated models expect to already use and import some modules from Ecto. We can load these dependencies globally by adding them to the `model` definition in  the `web/web.ex` file.
+
+```elixir
+  def model do
+    quote do
+      # Define common model functionality
+      use Ecto.Schema
+
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+    end
+  end
+```
+
+By default all model files should generate with `use HelloPhoenix.Web, :model` which will add `use Ecto.Schema`, `import Ecto`, `import Ecto.Changeset` and `import Ecto.Query` automatically.
+
+
 At this point, we are completely configured and ready to go. We can go back to the top of this guide and follow along.
