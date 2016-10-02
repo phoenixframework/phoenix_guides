@@ -625,6 +625,15 @@ defmodule HelloPhoenix.Mixfile do
 end
 ```
 
+We also need to explicitly append both `:postgrex` and `:phoenix_ecto` in the list of applications.
+
+```elixir
+def application do
+    [mod: {HelloPhoenix, []},
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, ... :postgrex, :phoenix_ecto]]
+end
+```
+
 Then we run `mix do deps.get, compile` to get them into our application.
 
 ```console
@@ -634,7 +643,7 @@ Dependency resolution completed successfully
 . . .
 ```
 
-The next piece we need to add is our application's repo. We can easily do that with the `ecto.gen.repo` task.
+The next piece we need to add is our application's repo. We can easily do that with the `ecto.gen.repo -r HelloPhoenix.Repo` task. 
 
 ```console
 $ mix ecto.gen.repo
@@ -648,6 +657,7 @@ supervisor(HelloPhoenix.Repo, [])
 ```
 
 Note: Please see the "Repo" section above for information on what the repo does.
+We will follow the instructions for the supervisor setup below.
 
 This task creates a directory for our repo as well as the repo itself.
 
@@ -667,6 +677,12 @@ database: "hello_phoenix_repo",
 username: "user",
 password: "pass",
 hostname: "localhost"
+```
+
+We have to further enhance our `config/config.exs` file by adding a new line which contains a list of `ecto_repos`. Here we just add our newly generated `HelloPhoenix.Repo`.
+
+```elixir
+config :hello_phoenix, ecto_repos: [HelloPhoenix.Repo] 
 ```
 
 We should also make sure to listen to the output of `ecto.gen.repo` and add our application repo as a child worker to our application's supervision tree.
