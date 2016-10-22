@@ -9,6 +9,7 @@ defmodule PhoenixGuides.Mixfile do
      version: @version,
      elixir: "~> 1.3",
      deps: deps(),
+     preferred_cli_env: [docs: :docs],
      docs: [source_ref: "v#{@version}",
             main: "overview",
             logo: "styling/Phoenix_files/phoenix-logo-white.png",
