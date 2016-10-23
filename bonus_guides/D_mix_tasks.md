@@ -378,8 +378,8 @@ Add the channel to your `web/channels/user_socket.ex` handler, for example:
 
 #### `mix phoenix.gen.presence`
 
-This task will generate a Presence tracker for your application. You can pass the module name as an optional argument,
-otherwise it will default to `Presence`.
+This task will generate a Presence tracker. The module name can be passed as an argument, 
+`Presence` is used if no module name is passed.
 
 ```console
 $ mix phoenix.gen.presence Presence
