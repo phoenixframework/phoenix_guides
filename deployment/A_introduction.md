@@ -59,12 +59,12 @@ $ MIX_ENV=prod mix compile
 
 ## Compiling your application assets
 
-This step is required only if you have static assets like images, javascript, stylesheets and more in your Phoenix applications. By default, Phoenix uses brunch, and that's what we are going to explore.
+This step is required only if you have static assets like images, javascript, stylesheets and more in your Phoenix applications. By default, Phoenix uses brunch, and that's what we are going to explore. You don't need a local installation of brunch, just run ```npm run deploy``` and it will invoke ```brunch build --production``` for you.
 
 Compilation of static assets happens in two steps:
 
 ```console
-$ brunch build --production
+$ npm run deploy
 $ MIX_ENV=prod mix phoenix.digest
 Check your digested files at "priv/static".
 ```
