@@ -190,7 +190,7 @@ email formatting and content elsewhere.
 In our app's layout template directory we can create two new layouts, one for
 HTML emails, one for text emails.
 
-`web/templates/layout/email.html` could look like this:
+`web/templates/layout/email.html.eex` could look like this:
 
 ```html
 <!DOCTYPE html>
@@ -207,7 +207,7 @@ HTML emails, one for text emails.
 </html>
 ```
 
-`web/templates/layout/email.text` could look like this:
+`web/templates/layout/email.text.eex` could look like this:
 
 ```
 Hello!
