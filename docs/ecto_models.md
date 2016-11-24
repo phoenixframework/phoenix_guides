@@ -224,7 +224,7 @@ defmodule HelloPhoenix.User do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
+  def changeset(struct, params \\ :empty) do
     struct
     |> cast(params, [:name, :email, :bio, :number_of_pets])
     |> validate_required([:name, :email, :bio, :number_of_pets])
@@ -241,7 +241,7 @@ Changesets define a pipeline of transformations our data needs to undergo before
 Let's take a closer look at our default changeset.
 
 ```elixir
-  def changeset(struct, params \\ %{}) do
+  def changeset(struct, params \\ :empty) do
     struct
     |> cast(params, [:name, :email, :bio, :number_of_pets])
     |> validate_required([:name, :email, :bio, :number_of_pets])
@@ -266,8 +266,8 @@ HelloPhoenix.User
 Then let's create a changeset from our model with an empty `User` struct, and an empty map of parameters.
 
 ```console
-iex(2)> changeset = User.changeset(%User{}, %{})
-#Ecto.Changeset<action: nil, changes: %{},
+iex(2)> changeset = User.changeset(%User{}, :empty)
+#Ecto.Changeset<action: nil, changes: :empty,
   errors: [name: {"can't be blank", []}, email: {"can't be blank", []},
     bio: {"can't be blank", []}, number_of_pets: {"can't be blank", []}],
   data: #HelloPhoenix.User<>, valid?: false>
@@ -348,7 +348,7 @@ We can validate more than just whether a field is required or not. Let's take a 
 What if we had a requirement that all biographies in our system must be at least two characters long? We can do this easily by adding another transformation to the pipeline in our changeset which validates the length of the `bio` field.
 
 ```elixir
-  def changeset(struct, params \\ %{}) do
+  def changeset(struct, params \\ :empty) do
     struct
     |> cast(params, [:name, :email, :bio, :number_of_pets])
     |> validate_required([:name, :email, :bio, :number_of_pets])
@@ -366,7 +366,7 @@ Bio should be at least 2 characters
 If we also have a requirement for the maximum length that a bio can have, we can simply add another validation.
 
 ```elixir
-  def changeset(struct, params \\ %{}) do
+  def changeset(struct, params \\ :empty) do
     struct
     |> cast(params, [:name, :email, :bio, :number_of_pets])
     |> validate_required([:name, :email, :bio, :number_of_pets])
@@ -385,7 +385,7 @@ Bio should be at most 140 characters
 Let's say we want to perform at least some rudimentary format validation on the `email` field. All we want to check for is the presence of the "@". The `validate_format/3` function is just what we need.
 
 ```elixir
-  def changeset(struct, params \\ %{}) do
+  def changeset(struct, params \\ :empty) do
     struct
     |> cast(params, [:name, :email, :bio, :number_of_pets])
     |> validate_required([:name, :email, :bio, :number_of_pets])
