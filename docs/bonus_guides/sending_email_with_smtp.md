@@ -246,7 +246,7 @@ end
 The process for moving the email content to a template is similar. Again we
 create two new templates, one for text, one for HTML.
 
-`web/templates/email/welcome.html` could look like this:
+`web/templates/email/welcome.html.eex` could look like this:
 
 ```html
 <p>
@@ -254,7 +254,7 @@ create two new templates, one for text, one for HTML.
 </p>
 ```
 
-`web/templates/email/welcome.text` could look like this:
+`web/templates/email/welcome.text.eex` could look like this:
 
 ```
 Welcome to MyApp!
@@ -291,7 +291,7 @@ functions are nice and simple!
 Lastly, if we wanted variable data in our templates we would just use
 assignment as usual with the view render function.
 
-`web/templates/email/welcome.html` could look like this:
+`web/templates/email/welcome.html.eex` could look like this:
 
 ```html
 <p>
