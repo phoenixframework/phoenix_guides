@@ -63,8 +63,8 @@ config :my_app, MyApp.Mailer,
   adapter: Bamboo.SMTPAdapter,
   server: "smtp.domain",
   port: 1025,
-  username: SYSTEM.get_env("SMTP_USERNAME"),
-  password: SYSTEM.get_env("SMTP_PASSWORD"),
+  username: System.get_env("SMTP_USERNAME"),
+  password: System.get_env("SMTP_PASSWORD"),
   tls: :if_available, # can be `:always` or `:never`
   ssl: false, # can be `true`
   retries: 1
@@ -99,7 +99,7 @@ Lastly we need another module that will contain our emails, which we can
 define in `lib/email.ex`.
 
 ```elixir
-defmodule Email do
+defmodule MyApp.Email do
   use Bamboo.Phoenix, view: MyApp.EmailView
 end
 ```
