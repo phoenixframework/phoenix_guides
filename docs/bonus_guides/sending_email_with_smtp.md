@@ -107,7 +107,7 @@ end
 With this in place, we can start creating our custom email functions. Web
 applications may send any number of different types of emails - welcome emails
 after signup, password confirmations, activity notifications - the list goes
-on. For each type of email, we'll define a new function which will call
+on. For each type of email, we'll define a new function which we'll call
 `new_email/1` in order to build the email.
 
 Let's say we want to send a welcome email to new users formatted as plain
