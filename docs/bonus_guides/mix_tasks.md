@@ -784,6 +784,7 @@ defmodule Mix.Tasks.HelloPhoenix.Greeting do
   """
 
   def run(_args) do
+    Mix.Task.run("app.start", []) # optional: starts the supervision tree so that you can use Repo
     Mix.shell.info "Greetings from the Hello Phoenix Application!"
   end
 
