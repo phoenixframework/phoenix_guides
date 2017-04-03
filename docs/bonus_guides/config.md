@@ -37,6 +37,28 @@ import_config "#{Mix.env}.exs"
 
 We should open each of these files and familiarize ourselves with the contents.
 
+A sample example for utilizing API keys, using `config/3`, takes an app
+name, key name, and a keyword list of arguments:
+
+```elixir
+# config/prod.secret.exs
+use Mix.Config
+...
+config :app_name, :api_keys, [key_1: "de246b35-8fcc-459b-b3bf-c84df475a72c",
+  key_2: "a07f8800-36e3-473a-934f-c70a729019d4"]
+...
+```
+
+```elixir
+Application.get_env(:app_name, :api_keys) # => [key_1: "de246b35-8fcc-459b-b3bf-c84df475a72c",
+  key_2: "a07f8800-36e3-473a-934f-c70a729019d4"]
+
+Keyword.get(Application.get_env(:app_name, :api_keys), :key_1) # => "de246b35-8fcc-459b-b3bf-c84df475a72c"
+```
+
+For more information please see the [Mix.Config
+docs](https://hexdocs.pm/mix/Mix.Config.html)
+
 In addition to these default development (`dev.exs`), test (`test.exs`) and production (`prod.exs`) environment configurations, Phoenix supports the use of custom environment configurations that we can manually add as we get more advanced.
 
 #### Umbrella Apps
