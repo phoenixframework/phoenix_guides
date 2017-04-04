@@ -50,10 +50,9 @@ config :app_name, :api_keys, [key_1: "de246b35-8fcc-459b-b3bf-c84df475a72c",
 ```
 
 ```elixir
-Application.get_env(:app_name, :api_keys) # => [key_1: "de246b35-8fcc-459b-b3bf-c84df475a72c",
-  key_2: "a07f8800-36e3-473a-934f-c70a729019d4"]
+Application.get_env(:app_name, :api_keys) # => [key_1: "de246b35-8fcc-459b-b3bf-c84df475a72c", key_2: "a07f8800-36e3-473a-934f-c70a729019d4"]
 
-Keyword.get(Application.get_env(:app_name, :api_keys), :key_1) # => "de246b35-8fcc-459b-b3bf-c84df475a72c"
+Application.get_env(:app_name, :api_keys) |> Keyword.get(:key_1) # => "de246b35-8fcc-459b-b3bf-c84df475a72c"
 ```
 
 For more information please see the [Mix.Config
