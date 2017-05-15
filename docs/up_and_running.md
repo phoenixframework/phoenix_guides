@@ -8,28 +8,28 @@ At this point, we should have Elixir, Erlang, Hex, and the Phoenix archive insta
 
 Ok, we're ready to go!
 
-We can run `mix phoenix.new` from any directory in order to bootstrap our Phoenix application. Phoenix will accept either an absolute or relative path for the directory of our new project. Assuming that the name of our application is `hello_phoenix`, either of these will work.
+We can run `mix phx.new` from any directory in order to bootstrap our Phoenix application. Phoenix will accept either an absolute or relative path for the directory of our new project. Assuming that the name of our application is `hello_phoenix`, either of these will work.
 
 ```console
-$ mix phoenix.new /Users/me/work/elixir-stuff/hello_phoenix
+$ mix phx.new /Users/me/work/elixir-stuff/hello_phoenix
 ```
 
 ```console
-$ mix phoenix.new hello_phoenix
+$ mix phx.new hello_phoenix
 ```
 
-> A note about [Brunch.io](http://brunch.io/) before we begin: Phoenix will use Brunch.io for asset management by default. Brunch.io's dependencies are installed via the node package manager, not mix. Phoenix will prompt us to install them at the end of the `mix phoenix.new` task. If we say "no" at that point, and if we don't install those dependencies later with `npm install`, our application will raise errors when we try to start it, and our assets may not load properly. If we don't want to use Brunch.io at all, we can simply pass `--no-brunch` to `mix phoenix.new`.
+> A note about [Brunch.io](http://brunch.io/) before we begin: Phoenix will use Brunch.io for asset management by default. Brunch.io's dependencies are installed via the node package manager, not mix. Phoenix will prompt us to install them at the end of the `mix phx.new` task. If we say "no" at that point, and if we don't install those dependencies later with `npm install`, our application will raise errors when we try to start it, and our assets may not load properly. If we don't want to use Brunch.io at all, we can simply pass `--no-brunch` to `mix phx.new`.
 
-Now that we're ready, let's run `mix phoenix.new` with a relative path.
+Now that we're ready, let's run `mix phx.new` with a relative path.
 
 ```console
-mix phoenix.new hello_phoenix
+mix phx.new hello_phoenix
 * creating hello_phoenix/config/config.exs
 * creating hello_phoenix/config/dev.exs
 * creating hello_phoenix/config/prod.exs
 ...
-* creating hello_phoenix/web/views/layout_view.ex
-* creating hello_phoenix/web/views/page_view.ex
+* creating hello_phoenix/lib/hello_phoenix/web/views/layout_view.ex
+* creating hello_phoenix/lib/hello_phoenix/web/views/page_view.ex
 
 Fetch and install dependencies? [Yn]
 ```
@@ -39,16 +39,17 @@ Phoenix generates the directory structure and all the files we will need for our
 ```console
 Fetch and install dependencies? [Yn] Y
 * running mix deps.get
-* running npm install && node node_modules/brunch/bin/brunch build
+* running mix deps.compile
+* running cd assets && npm install && node node_modules/brunch/bin/brunch build
 
 We are all set! Run your Phoenix application:
 
     $ cd hello_phoenix
-    $ mix phoenix.server
+    $ mix phx.server
 
 You can also run your app inside IEx (Interactive Elixir) as:
 
-    $ iex -S mix phoenix.server
+    $ iex -S mix phx.server
 
 Before moving on, configure your database in config/dev.exs and run:
 
@@ -67,7 +68,7 @@ Now we'll create our database:
 
 ```
 $ mix ecto.create
-The database for HelloPhoenix.Repo has been created.
+The database for HelloPhoenix.Repo has been created
 ```
 
 > Note: if this is the first time you are running this command, Phoenix may also ask to install Rebar. Go ahead with the installation as Rebar is used to build Erlang packages.
@@ -75,42 +76,33 @@ The database for HelloPhoenix.Repo has been created.
 And finally, we'll start the Phoenix server:
 
 ```console
-$ mix phoenix.server
-[info] Running HelloPhoenix.Endpoint with Cowboy using http on port 4000
-23 Nov 05:25:14 - info: compiled 5 files into 2 files, copied 3 in 1724ms
+$ mix phx.server
+[info] Running HelloPhoenix.Web.Endpoint with Cowboy using http://0.0.0.0:4000
+19:30:43 - info: compiled 6 files into 2 files, copied 3 in 2.1 sec
 ```
 
-If we choose not to have Phoenix install our dependencies when we generate a new application, the `phoenix.new` task will prompt us to take the necessary steps when we do want to install them.
+If we choose not to have Phoenix install our dependencies when we generate a new application, the `phx.new` task will prompt us to take the necessary steps when we do want to install them.
 
 ```console
 Fetch and install dependencies? [Yn] n
 
-We are all set! Run your Phoenix application:
+We are almost there! The following steps are missing:
 
     $ cd hello_phoenix
     $ mix deps.get
-    $ mix phoenix.server
+    $ cd assets && npm install && node node_modules/brunch/bin/brunch build
 
-You can also run your app inside IEx (Interactive Elixir) as:
-
-    $ iex -S mix phoenix.server
-
-Before moving on, configure your database in config/dev.exs and run:
+Then configure your database in config/dev.exs and run:
 
     $ mix ecto.create
 
+Start your Phoenix app with:
 
-Phoenix uses an optional assets build tool called brunch.io
-that requires node.js and npm. Installation instructions for
-node.js, which includes npm, can be found at http://nodejs.org.
+    $ mix phx.server
 
-After npm is installed, install your brunch dependencies by
-running inside your app:
+You can also run your app inside IEx (Interactive Elixir) as:
 
-    $ npm install
-
-If you don't want brunch.io, you can re-run this generator
-with the --no-brunch option.
+    $ iex -S mix phx.server
 ```
 
 By default Phoenix accepts requests on port 4000. If we point our favorite web browser at [http://localhost:4000](http://localhost:4000), we should see the Phoenix Framework welcome page.
