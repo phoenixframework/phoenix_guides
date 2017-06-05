@@ -91,6 +91,12 @@ When we work with Ecto models in these guides, we will use PostgreSQL and the Po
 
 Postgrex is a direct Phoenix dependency, and it will be automatically installed along with the rest of our dependencies as we start our app.
 
+We will need to create a PostgreSQL role (user) in order to create the database. We can create the "postgres" role with the permissions needed to log in and create a database by running this command:
+```console
+=# CREATE ROLE postgres LOGIN CREATEDB;
+CREATE ROLE
+```
+
 ### inotify-tools (for linux users)
 
 This is a Linux-only filesystem watcher that Phoenix uses for live code reloading. (Mac OS X or Windows users can safely ignore it.)
