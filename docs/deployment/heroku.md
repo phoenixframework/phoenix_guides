@@ -167,11 +167,11 @@ defmodule HelloPhoenix.UserSocket do
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket,
-    timeout: 45_000
+    timeout: 55_000
 end
 ```
 
-This ensures that any idle connections are closed by Phoenix before they reach Heroku's 55 second timeout window.
+This ensures that any idle connections are closed by Phoenix before they reach Heroku's default 55 seconds timeout window.
 
 Lastly, we'll need to create a [Procfile](https://devcenter.heroku.com/articles/procfile) with the following:
 
