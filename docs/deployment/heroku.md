@@ -74,15 +74,15 @@ The URL in the output is the URL to our application. If we open it in our browse
 
 ## Adding the Phoenix Static Buildpack
 
-We need to compile static assets for a successful Phoenix deployment. The [Phoenix static buildpack](https://github.com/gjaldon/heroku-buildpack-phoenix-static) can take care of that for us, so let's add it now.
+We need to compile static assets for a successful Phoenix deployment. The [Phoenix static buildpack](https://github.com/acconrad/heroku-buildpack-phoenix-static) can take care of that for us, so let's add it now.
 
 _Skip this step if you do not have any static assets (i.e. you created your project with the `--no-brunch --no-html` flags)._
 
 ```console
-$ heroku buildpacks:add https://github.com/gjaldon/heroku-buildpack-phoenix-static.git
+$ heroku buildpacks:add https://github.com/acconrad/heroku-buildpack-phoenix-static.git
 Buildpack added. Next release on mysterious-meadow-6277 will use:
   1. https://github.com/HashNuke/heroku-buildpack-elixir.git
-  2. https://github.com/gjaldon/heroku-buildpack-phoenix-static.git
+  2. https://github.com/acconrad/heroku-buildpack-phoenix-static.git
 Run `git push heroku master` to create a new release using these buildpacks.
 ```
 
