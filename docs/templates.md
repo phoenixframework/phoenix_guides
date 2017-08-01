@@ -10,7 +10,7 @@ As we learned in the [View Guide](views.html), by default, templates live in the
 
 We've already seen several ways in which templates are used, notably in the [Adding Pages Guide](adding_pages.html) and the [Views Guide](views.html). We may cover some of the same territory here, but we will certainly add some new information.
 
-##### web.ex
+##### hello_web.ex
 
 Phoenix generates a `lib/hello_web.ex` file that serves as place to group common imports and aliases. All declarations here within the `view` block apply to all your templates.
 
