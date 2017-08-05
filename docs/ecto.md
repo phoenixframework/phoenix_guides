@@ -190,7 +190,7 @@ Ecto schemas at their core are simply Elixir structs. Our `schema` block is what
 
 ## Changesets and Validations
 
-Changesets define a pipeline of transformations our data needs to undergo before it will be ready for our application to use. These transformations might include type-casting, user input validation, and filtering out any extraneous parameters. Often times, we'll use changesets to validate user input before writing it to the database. Ecto Repos are also changeset-aware, which allows them not only to refuse invalid data, but also perform the minimal database updates possible by inspecting the changeset to know which fields have changed.
+Changesets define a pipeline of transformations our data needs to undergo before it will be ready for our application to use. These transformations might include type-casting, user input validation, and filtering out any extraneous parameters. Often we'll use changesets to validate user input before writing it to the database. Ecto Repos are also changeset-aware, which allows them not only to refuse invalid data, but also perform the minimal database updates possible by inspecting the changeset to know which fields have changed.
 
 Let's take a closer look at our default changeset function.
 
