@@ -43,7 +43,11 @@ Phoenix is made up of a number of distinct parts, each with its own purpose and 
 
 ## Phoenix Layers
 
-We just covered the internal parts that make up Phoenix, but its important to remember Phoenix itself is actually the top layer of a multi-layer system designed to be modular and flexible. The other layers include Plug, Ecto, and Cowboy.
+We just covered the internal parts that make up Phoenix, but its important to remember Phoenix itself is actually the top layer of a multi-layer system designed to be modular and flexible. The other layers include Cowboy, Plug, and Ecto.
+
+### Cowboy
+
+We won't be covering the Erlang HTTP server, Cowboy, in these guides other than to note that Cowboy acts as the foundation for both Phoenix and Plug.
 
 ### Plug
 
@@ -72,10 +76,6 @@ Ecto is built around four main abstractions:
 * Changeset - Changesets declare transformations we need to perform on our model data before our application can use it. These include type casting, validations, and more.
 
 A new Phoenix application will use Ecto with PostgreSQL storage by default.
-
-### Cowboy
-
-We won't be covering the Erlang HTTP server, Cowboy, in these guides other than to note that Cowboy acts as the foundation for both Plug and Phoenix.
 
 ## A Note about these guides
 If you find an issue with the guides or would like to help improve these guides please checkout the [Phoenix Guides](https://github.com/phoenixframework/phoenix_guides/) github. Issues and Pull Requests are happily accepted!
