@@ -75,7 +75,6 @@ defmodule HelloWeb.MessageController do
     render conn, :show, page: find_message(params["id"])
   end
 
-  defp authenticate(conn), do: ...
   defp authenticate(conn, _) do
     case Authenticator.find_user(conn) do
       {:ok, user} ->
