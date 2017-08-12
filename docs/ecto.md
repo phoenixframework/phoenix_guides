@@ -373,6 +373,10 @@ We've talked a lot about migrations and data-storage, but we haven't yet persist
 Let's head back over to IEx with `iex -S mix`, and insert a couple users to the database.
 
 ```console
+iex> alias Hello.Repo
+Hello.Repo
+iex> alias Hello.User
+Hello.User
 iex> Repo.insert(%User{email: "user1@example.com"})
 [debug] QUERY OK db=4.6ms
 INSERT INTO "users" ("email","inserted_at","updated_at") VALUES ($1,$2,$3) RETURNING "id" ["user1@example.com", {{2017, 5, 23}, {19, 6, 4, 822044}}, {{2017, 5, 23}, {19, 6, 4, 822055}}]
