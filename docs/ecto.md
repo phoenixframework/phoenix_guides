@@ -359,7 +359,7 @@ Let's say we want to perform at least some rudimentary format validation on the 
 If we try to cast a user with an email of "example.com", we should see an error message like the following.
 
 ```console
-iex> changeset = User.changeset(%User{}, %{email: "emaxmple.com"})
+iex> changeset = User.changeset(%User{}, %{email: "example.com"})
 iex> changeset.errors[:email]
 {"has invalid format", [validation: :format]}
 ```
