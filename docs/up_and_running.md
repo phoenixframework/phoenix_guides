@@ -93,6 +93,18 @@ Then configure your database in config/dev.exs and run:
 
     $ mix ecto.create
 
+In ./config/dev.exs, You should properly fill the database configuration
+   
+   # Configure your database
+    config :my_app, MyApp.Repo,
+      adapter: Ecto.Adapters.Postgres,
+      username: "phoenix-database-user",
+      password: "some-random-password",
+      database: "the-database",
+      hostname: "localhost",
+      pool_size: 10
+
+
 Start your Phoenix app with:
 
     $ mix phx.server
