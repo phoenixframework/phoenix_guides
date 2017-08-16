@@ -17,7 +17,7 @@ Let's use these ideas to build out our web application. Our goal is to build a u
 
 ### Adding an Accounts Context
 
-User accounts are often wide-reaching across a platform so it's important to think up-front about writing a well-defined interface. With that in mind, our goal is to build an accounts API that handles creating, updating, and deleting user accounts, as well as authenticating user credentials. We'll start off with basic features, but as we add authentication later, we'll see how starting with a solid foundation allows us to grow our application naturally as we add functionality.
+User accounts are often wide-reaching across a platform so it's important to think upfront about writing a well-defined interface. With that in mind, our goal is to build an accounts API that handles creating, updating, and deleting user accounts, as well as authenticating user credentials. We'll start off with basic features, but as we add authentication later, we'll see how starting with a solid foundation allows us to grow our application naturally as we add functionality.
 
 Phoenix includes the `phx.gen.html`, `phx.gen.json`, and `phoenix.gen.context` generators that apply the ideas of isolating functionality in our applications into contexts. These generators are a great way to hit the ground running while Phoenix nudges you in the right direction to grow your application. Let's put these tools to use for our new user accounts context.
 
@@ -43,7 +43,7 @@ The database for Hello.Repo has been created
 14:38:37.418 [info]  Already up
 ```
 
-Now we're ready to create our accounts context. We'll use the `phx.gen.html` task which creates a context module that wraps up Ecto access for creating, updating, and deleting users, along with web files like controllers and templates for the web-interface into our context. Run the following command at your project root:
+Now we're ready to create our accounts context. We'll use the `phx.gen.html` task which creates a context module that wraps up Ecto access for creating, updating, and deleting users, along with web files like controllers and templates for the web interface into our context. Run the following command at your project root:
 
 ```console
 $ mix phx.gen.html Accounts User users name:string \
@@ -100,7 +100,7 @@ $ mix ecto.migrate
 [info]  == Migrated in 0.0s
 ```
 
-Before jump into the generated code, let's start the server with `mix phx.server` and visit http://localhost:4000/users. Let's follow the "New User" link and click the "Submit" button without providing any input. We should be greeted with the following output:
+Before jump into the generated code, let's start the server with `mix phx.server` and visit [http://localhost:4000/users](http://localhost:4000/users). Let's follow the "New User" link and click the "Submit" button without providing any input. We should be greeted with the following output:
 
 ```
 Oops, something went wrong! Please check the errors below.
@@ -155,9 +155,9 @@ defmodule HelloWeb.UserController do
 end
 ```
 
-We've seen how controllers work in our [controller guide](controllers.html), so the code probably isn't too surprising. What is worth noticing is how our controller calls into the `Accounts` context. We can see that the `index` action fetches a list of users with `Accounts.list_users/0`, and how users are persisted in the `create` action with `Accounts.create_user/1`. We haven't yet looked at the accounts context, so we don't yet know how user fetching and creation is happening under the hood – *but that's the point*. Our Phoenix controller is the web-interface into our greater application. It shouldn't be concerned with the details of how users are fetched from the database or persisted into storage. We only care about telling our application to perform some work for us. This is great because our business logic and storage details are decoupled from the web layer of our application. If we move to a full-text storage engine later for fetching users instead of a SQL query, our controller doesn't need to be changed. Likewise, we can reuse our context code from any other interface in our application, be it a channel, mix task, or long-running process importing CSV data.
+We've seen how controllers work in our [controller guide](controllers.html), so the code probably isn't too surprising. What is worth noticing is how our controller calls into the `Accounts` context. We can see that the `index` action fetches a list of users with `Accounts.list_users/0`, and how users are persisted in the `create` action with `Accounts.create_user/1`. We haven't yet looked at the accounts context, so we don't yet know how user fetching and creation is happening under the hood – *but that's the point*. Our Phoenix controller is the web interface into our greater application. It shouldn't be concerned with the details of how users are fetched from the database or persisted into storage. We only care about telling our application to perform some work for us. This is great because our business logic and storage details are decoupled from the web layer of our application. If we move to a full-text storage engine later for fetching users instead of a SQL query, our controller doesn't need to be changed. Likewise, we can reuse our context code from any other interface in our application, be it a channel, mix task, or long-running process importing CSV data.
 
-In the case of our `create` action, when we successfully create a user, we use `Phoenix.Controller.push_flash/2` to show a success message, and then we redirect to the `user_path`'s show page. Conversely, if `Accounts.create_user/1` fails, we render our `"new.html"` template and pass along the Ecto changeset for the template to lift error messages from.
+In the case of our `create` action, when we successfully create a user, we use `Phoenix.Controller.put_flash/2` to show a success message, and then we redirect to the `user_path`'s show page. Conversely, if `Accounts.create_user/1` fails, we render our `"new.html"` template and pass along the Ecto changeset for the template to lift error messages from.
 
 Next, let's dig deeper and checkout our `Accounts` context in `lib/hello/accounts/accounts.ex`:
 
@@ -212,7 +212,7 @@ Now we know how data is fetched, but how are users persisted? Let's take a look 
   end
 ```
 
-There's more documentation than code here, but a couple things are important to highlight. First, we can see again that our Ecto Repo is used under-the-hood for database access. You probably also noticed the call to `User.changeset/2`. We talked about changesets before, and now we see them in action in our context.
+There's more documentation than code here, but a couple of things are important to highlight. First, we can see again that our Ecto Repo is used under the hood for database access. You probably also noticed the call to `User.changeset/2`. We talked about changesets before, and now we see them in action in our context.
 
 If we open up the `User` schema in `lib/hello/accounts/user.ex`, it will look immediately familiar:
 
@@ -284,7 +284,7 @@ Before we run our migrations, we need to make one change to the generated migrat
   end
 ```
 
-We changed the `:on_delete` option from `:nothing` to `:delete_all`, which will generate a foreign key constraint that will delete all credentials for a given user when the user is removed from the database. Likewise, we also passed `null: false` to disallow creating credentials without an existing user. By using a database constraint, we enforce data integrity at the database level, rather than relying on ad-hoc and error prone application logic.
+We changed the `:on_delete` option from `:nothing` to `:delete_all`, which will generate a foreign key constraint that will delete all credentials for a given user when the user is removed from the database. Likewise, we also passed `null: false` to disallow creating credentials without an existing user. By using a database constraint, we enforce data integrity at the database level, rather than relying on ad-hoc and error-prone application logic.
 
 Next, let's migrate up our database as Phoenix instructed:
 
@@ -569,7 +569,7 @@ Let's create a `CMS` context to handle basic CMS duties. Before we write code, l
 2. Pages belong to Authors who are responsible for publishing changes
 3. Author information should appear with the page, and include information such as author bio and role within the CMS, such as `"editor"`, `"writer"`, or `"intern"`.
 
-From the description, it's clear we need a `Page` resource for storing page information. What about a our author information? While we could extend our existing `Accounts.User` schema to include information such as bio and role, that would violate the responsibilities we've set up for our contexts. Why should our Account system now be aware of author information? Worse, with a field like "role", the CMS role in the system will likely conflict or be confused with other account roles for our application. There's a better way.
+From the description, it's clear we need a `Page` resource for storing page information. What about our author information? While we could extend our existing `Accounts.User` schema to include information such as bio and role, that would violate the responsibilities we've set up for our contexts. Why should our Account system now be aware of author information? Worse, with a field like "role", the CMS role in the system will likely conflict or be confused with other account roles for our application. There's a better way.
 
 Applications with "users" are naturally heavily user driven. After all, our software is typically designed to be used by human end-users one way or another. Instead of extending our `Accounts.User` struct to track every field and responsibility of our entire platform, it's better to keep those responsibilities with the modules who own that functionality. In our case, we can create a `CMS.Author` struct that holds author specific fields as it relates to a CMS. Now we can place fields like "role" and "bio" here, where they naturally live. Likewise, we also gain specialized datastructures in our application that are suited to the domain that we are operating in, rather than a single `%User{}` in the system that has to be everything to everyone.
 
@@ -621,7 +621,7 @@ This time we passed the `--web` option to the generator. This tells Phoenix what
 
 ```
 
-We added the `:authenticate_user` plug to require a signed in user for all routes within this CMS scope. With our routes in place, we can migrate up the database:
+We added the `:authenticate_user` plug to require a signed-in user for all routes within this CMS scope. With our routes in place, we can migrate up the database:
 
 ```
 $ mix ecto.migrate
@@ -827,7 +827,7 @@ There's a bit of a code here, so let's break it down. First, we rewrote the `cre
 
 Our CMS system requires an author to exist for any end-user before they publish posts, so we added an `ensure_author_exists` function to programmatically allow authors to be created. Our new function accepts an `Accounts.User` struct and either finds the existing author in the application with that `user.id`, or creates a new author for the user. Our authors table has a unique constraint on the `user_id` foreign key, so we are protected from a race condition allowing duplicate authors. That said, we still need to protect ourselves from racing the insert of another user. To accomplish this, we use a purpose-built changeset with `Ecto.Changeset.change/1` which accepts a new `Author` struct with our `user_id`. The changeset's only purpose is to convert a unique constraint violation into an error we can handle. After attempting to insert the new author with `Repo.insert/1`, we pipe to `handle_existing_author/1` which matches on the success and error cases. For the success case, we are done and simply return the created author, otherwise we use `Repo.get_by!` to fetch the author for the `user_id` that already exists.
 
-That wraps up our `CMS` changes. Now, let's update our web-layer to support our additions. Before we update our individual CMS controller actions, we need to make a couple additions to the `CMS.PageController` plug pipeline. First, we must ensure an author exists for end-users accessing the CMS, and we need to authorize access to page owners.
+That wraps up our `CMS` changes. Now, let's update our web layer to support our additions. Before we update our individual CMS controller actions, we need to make a couple of additions to the `CMS.PageController` plug pipeline. First, we must ensure an author exists for end-users accessing the CMS, and we need to authorize access to page owners.
 
 Open up your generated `lib/hello_web/controllers/cms/page_controller.ex` and make the following additions:
 
@@ -1012,12 +1012,12 @@ As we explored the context API, you might have wondered:
 
 > If one of the goals of our context is to encapsulate Ecto Repo access, why does `create_user/1` return an `Ecto.Changeset` struct when we fail to create a user?
 
-The answer is we've decided to expose `%Ecto.Changeset{}` as a public *data-structure* in our application. We saw before how changesets allow us to track field changes, perform validations, and generate error messages. Its use here is de-coupled from the private Repo access and Ecto changeset API internals. We're exposing a data-structure that the caller understands which contains the rich information like field errors. Conveniently for us, the `phoenix_ecto` project implements the necessary `Phoenix.Param` and `Phoenix.FormData` protocols which know how to handle `%Ecto.Changeset{}`'s for things like form generation and error messages. You can also think about it as if you defined your own `%Accounts.Changes{}` struct for the same purpose and implemented the Phoenix protocols for the web-layer integration.
+The answer is we've decided to expose `%Ecto.Changeset{}` as a public *data-structure* in our application. We saw before how changesets allow us to track field changes, perform validations, and generate error messages. Its use here is decoupled from the private Repo access and Ecto changeset API internals. We're exposing a data structure that the caller understands which contains the rich information like field errors. Conveniently for us, the `phoenix_ecto` project implements the necessary `Phoenix.Param` and `Phoenix.FormData` protocols which know how to handle `%Ecto.Changeset{}`'s for things like form generation and error messages. You can also think about it as being as if you had defined your own `%Accounts.Changes{}` struct for the same purpose and implemented the Phoenix protocols for the web-layer integration.
 
 
-### Strategies for cross-context work-flows
+### Strategies for cross-context workflows
 
-Our CMS context supports lazily creating authors in the system when a user decides to publish page content. This makes sense for our use-case because not all users of our system will be CMS authors. But what if our use-case was all users of our app are indeed authors?
+Our CMS context supports lazily creating authors in the system when a user decides to publish page content. This makes sense for our use case because not all users of our system will be CMS authors. But what if our use case were for when all users of our app are indeed authors?
 
 If we require a `CMS.Author` to exist every time an `Accounts.User` is created, we have to think carefully where to place this dependency. We know our `CMS` context depends on the `Accounts` context, but it's important to avoid cyclic dependencies across our contexts. For example, imagine we changed our `Accounts.create_user` function to:
 
@@ -1031,9 +1031,9 @@ def create_user(attrs) do
 end
 ```
 
-This may accomplish what we want, but now we need to wire up the schema relationships in the `Accounts` context to the `CMS` author. Worse, we now took our isolated `Accounts` context and required it to know about a content management system. This isn't what we want for isolated responsibilities in our application. There's a better way to handle these requirements.
+This may accomplish what we want, but now we need to wire up the schema relationships in the `Accounts` context to the `CMS` author. Worse, we have now taken our isolated `Accounts` context and required it to know about a content management system. This isn't what we want for isolated responsibilities in our application. There's a better way to handle these requirements.
 
-If you find yourself in similar situations where you feel your use case is requiring you to create circular dependencies across contexts, it's a sign you need a new context in the system to handle these application requirements. In our case, what we really want is an interface that handles all requirements when a user is created or registers in our application. To handle this, we could create a `UserRegistration` context, which calls into both the `Accounts` and `CMS` APIs to create a user, then associate a CMS author. Not only would this allow our `Accounts` to remain as isolated as possible, it gives us a clear, obvious API to handle `UserRegistration` needs in the system. If you take this approach, you can also use tools like `Ecto.Multi` to handle transactions across different context operations without deeply coupling the internal database calls. Part of our `UserRegistration` API could look something like this:
+If you find yourself in similar situations where you feel your use case is requiring you to create circular dependencies across contexts, it's a sign you need a new context in the system to handle these application requirements. In our case, what we really want is an interface that handles all requirements when a user is created or registers in our application. To handle this, we could create a `UserRegistration` context, which calls into both the `Accounts` and `CMS` APIs to create a user, then associate a CMS author. Not only would this allow our Accounts to remain as isolated as possible, it gives us a clear, obvious API to handle `UserRegistration` needs in the system. If you take this approach, you can also use tools like `Ecto.Multi` to handle transactions across different context operations without deeply coupling the internal database calls. Part of our `UserRegistration` API could look something like this:
 
 ```elixir
 defmodule Hello.UserRegistration do
