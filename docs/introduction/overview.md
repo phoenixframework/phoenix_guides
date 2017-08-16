@@ -30,9 +30,9 @@ Phoenix is made up of a number of distinct parts, each with its own purpose and 
         - invoke rendering via views
         - perform redirects
  - [Views](views.html)
-    - render templates
     - act as a presentation layer
     - define helper functions, available in templates, to decorate data for presentation
+    - render the templates
  - [Templates](templates.html)
     - are what they sound like :)
     - are precompiled and fast
