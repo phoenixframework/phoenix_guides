@@ -174,7 +174,7 @@ end
 
 This ensures that any idle connections are closed by Phoenix before they reach Heroku's 55-second timeout window.
 
-Lastly, we'll need to create a [Procfile](https://devcenter.heroku.com/articles/procfile) (a text file called “Procfile” in the root of our project’s folder) with the following line:
+Lastly, we'll need to create a [Procfile](https://devcenter.heroku.com/articles/procfile) (a text file called "Procfile" in the root of our project’s folder) with the following line:
 
 ```
 web: MIX_ENV=prod mix phoenix.server
@@ -204,7 +204,7 @@ $ heroku run "POOL_SIZE=2 mix hello.task"
 
 So that Ecto does not attempt to open more than the available connections.
 
-We still have to create the `SECRET_KEY_BASE` config based on a random string. First, use `phx.gen.secret` to get a new secret:
+We still have to create the `SECRET_KEY_BASE` config based on a random string. First, use `mix phx.gen.secret` to get a new secret:
 
 ```console
 $ mix phoenix.gen.secret

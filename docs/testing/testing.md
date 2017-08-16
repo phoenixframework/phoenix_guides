@@ -10,7 +10,7 @@ Let's see this in action.
 
 > Note: Before we proceed, we'll need to have PostgreSQL installed and running on our system. We'll also need to configure our repo with the correct login credentials. [The section on ecto.create in the Mix Tasks guide](mix_tasks.html#ecto-specific-mix-tasks) has more information on this, and the [Ecto Models Guide](ecto_models.html) dives into the details on how it all works.
 
-In a freshly generated application (we use a project named “hello” in the examples), let's run `mix test` at the root of the project. (Please see the [Up and Running Guide](up_and_running.html) for instructions on generating a new application.)
+In a freshly generated application (we use a project named "hello" in the examples), let's run `mix test` at the root of the project. (Please see the [Up and Running Guide](up_and_running.html) for instructions on generating a new application.)
 
 ```console
 $ mix test
