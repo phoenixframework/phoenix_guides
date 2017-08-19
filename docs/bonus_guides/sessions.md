@@ -79,8 +79,11 @@ defmodule HelloWeb.PageController do
   use HelloWeb, :controller
 
   def index(conn, _params) do
-    conn = put_session(conn, :message, "new stuff we just set in the session")
-    message = get_session(conn, :message)
+  
+    conn = fetch_session(conn)
+    put_session(conn, :message, "new stuff we just set in the session")
+
+    message = get_session(conn, :message)
 
     text conn, message
   end
