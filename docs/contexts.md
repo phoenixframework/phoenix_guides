@@ -29,7 +29,7 @@ Before we use the generators, we need to undo the changes we made in the Ecto gu
 
 ```console
 $ rm lib/hello/user.ex
-$ rm priv/repo/migrations/*_create_user.exs
+$ rm priv/repo/migrations/*_create_users.exs
 ```
 
 Next, let's reset our database so we also discard the table we have just removed:
