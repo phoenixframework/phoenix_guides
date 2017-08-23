@@ -896,9 +896,17 @@ We added two new plugs to our `CMS.PageController`. The first plug, `:require_ex
 
 Next, we added an `:authorized_page` plug that makes use of plug's guard clause feature where we can limit the plug to only certain actions. The definition for our `authorize_page/2` plug first fetches the page from the connection params, then does an authorization check against the `current_author`. If our current author's ID matches the fetched page ID, we have verified the page's owner is accessing the page and we simply assign the `page` into the connection assigns to be used in the controller action. If our authorization fails, we add a flash error message, redirect to the page index screen, and then call `Plug.Conn.halt/1` to prevent the plug pipeline from continuing and invoking the controller action.
 
-With our new plugs in place, we can now modify our `create`, `update`, and `delete` actions to make use of the new values in the connection assigns:
+With our new plugs in place, we can now modify our `create`, `edit`, `update`, and `delete` actions to make use of the new values in the connection assigns:
 
 ```elixir
+   def edit(conn, %{"id" => id}) do
+-    page = CMS.get_page!(id)
+-    changeset = CMS.change_page(page)
+-    render(conn, "edit.html", page: page, changeset: changeset)
++    changeset = CMS.change_page(conn.assigns.page)
++    render(conn, "edit.html", changeset: changeset)
+   end
+
   def create(conn, %{"page" => page_params}) do
 +   case CMS.create_page(conn.assigns.current_author, page_params) do
       {:ok, page} ->
