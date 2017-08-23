@@ -609,6 +609,41 @@ Remember to update your repository by running migrations:
 
 ```
 
+The `views` attribute on the pages will not be updated directly by the user, so let's remove it from the generated form. Open `lib/hello_web/templates/cms/page/form.html.eex` and remove this part:
+
+```eex
+-  <div class="form-group">
+-    <%= label f, :views, class: "control-label" %>
+-    <%= number_input f, :views, class: "form-control" %>
+-    <%= error_tag f, :views %>
+-  </div>
+```
+
+Also, change `lib/hello/cms/page.ex` to remove `:views` from the permitted params:
+
+```elixir
+  def changeset(%Page{} = page, attrs) do
+    page
+-    |> cast(attrs, [:title, :body, :views])
+-    |> validate_required([:title, :body, :views])
++    |> cast(attrs, [:title, :body])
++    |> validate_required([:title, :body])
+  end
+```
+
+Finally, open up the new file in `priv/repo/migrations` to ensure the `views` attribute will have a default value:
+
+```elixir
+    create table(:pages) do
+      add :title, :string
+      add :body, :text
+-     add :views, :integer
++     add :views, :integer, default: 0
+
+      timestamps()
+    end
+```
+
 This time we passed the `--web` option to the generator. This tells Phoenix what namespace to use for the web modules, such as controllers and views. This is useful when you have conflicting resources in the system, such as our existing `PageController`, as well as a way to naturally namespace paths and functionality of different features, like a CMS system. Phoenix instructed us to add a new `scope` to the router for a `"/cms"` path prefix. Let's copy paste the following into our `lib/hello_web/router.ex`, but we'll make one modification to the `pipe_through` macro:
 
 
