@@ -155,7 +155,7 @@ defmodule HelloWeb.UserController do
 end
 ```
 
-We've seen how controllers work in our [controller guide](controllers.html), so the code probably isn't too surprising. What is worth noticing is how our controller calls into the `Accounts` context. We can see that the `index` action fetches a list of users with `Accounts.list_users/0`, and how users are persisted in the `create` action with `Accounts.create_user/1`. We haven't yet looked at the accounts context, so we don't yet know how user fetching and creation is happening under the hood – *but that's the point*. Our Phoenix controller is the web interface into our greater application. It shouldn't be concerned with the details of how users are fetched from the database or persisted into storage. We only care about telling our application to perform some work for us. This is great because our business logic and storage details are decoupled from the web layer of our application. If we move to a full-text storage engine later for fetching users instead of a SQL query, our controller doesn't need to be changed. Likewise, we can reuse our context code from any other interface in our application, be it a channel, mix task, or long-running process importing CSV data.
+We've seen how controllers work in our [controller guide](controllers.html), so the code probably isn't too surprising. What is worth noticing is how our controller calls into the `Accounts` context. We can see that the `index` action fetches a list of users with `Accounts.list_users/0`, and how users are persisted in the `create` action with `Accounts.create_user/1`. We haven't yet looked at the accounts context, so we don't yet know how user fetching and creation is happening under the hood – *but that's the point*. Our Phoenix controller is the web interface into our greater application. It shouldn't be concerned with the details of how users are fetched from the database or persisted into storage. We only care about telling our application to perform some work for us. This is great because our business logic and storage details are decoupled from the web layer of our application. If we move to a full-text storage engine later for fetching users instead of a SQL query, our controller doesn't need to be changed. Likewise, we can reuse our context code from any other interface in our application, be it a channel, mix task, or long-running process importing CSV data.
 
 In the case of our `create` action, when we successfully create a user, we use `Phoenix.Controller.put_flash/2` to show a success message, and then we redirect to the `user_path`'s show page. Conversely, if `Accounts.create_user/1` fails, we render our `"new.html"` template and pass along the Ecto changeset for the template to lift error messages from.
 
@@ -188,7 +188,7 @@ defmodule Hello.Accounts do
 end
 ```
 
-This module will be the public API for all account functionality in our system. For example, in addition to user account management, we may also handle user login credentials, account preferences, and password reset generation. If we look at the `list_users/0` function, we can see the private details of user fetching. And it's super simple. We have a call to `Repo.all(User)`. We saw how Ecto repo queries worked in [the Ecto guide](ecto.html), so this call should look familiar. Our `list_users` function is a generalized function specifying the *intent* of our code – namely to list users. The details of that intent where we use our Repo to fetch the users from our PostgreSQL database is hidden from our callers. This is a common theme we'll see re-iterated as we use the Phoenix generators. Phoenix will push us to think about where we have different responsibilities in our application, and then to wrap up those different areas behind well-named modules and functions that make the intent of our code clear, while encapsulating the details.
+This module will be the public API for all account functionality in our system. For example, in addition to user account management, we may also handle user login credentials, account preferences, and password reset generation. If we look at the `list_users/0` function, we can see the private details of user fetching. And it's super simple. We have a call to `Repo.all(User)`. We saw how Ecto repo queries worked in [the Ecto guide](ecto.html), so this call should look familiar. Our `list_users` function is a generalized function specifying the *intent* of our code – namely to list users. The details of that intent where we use our Repo to fetch the users from our PostgreSQL database is hidden from our callers. This is a common theme we'll see re-iterated as we use the Phoenix generators. Phoenix will push us to think about where we have different responsibilities in our application, and then to wrap up those different areas behind well-named modules and functions that make the intent of our code clear, while encapsulating the details.
 
 Now we know how data is fetched, but how are users persisted? Let's take a look at the `Accounts.create_user/1` function:
 
@@ -392,22 +392,27 @@ Next, let's show the user's email address in the user show template. Add the fol
 
 Now if we visit `http://localhost:4000/users/new`, we'll see the new email input, but if you try to save a user, you'll find that the email field is ignored. No validations are run telling you it was blank and the data was not saved. What gives?
 
-We used Ecto's `belongs_to` and `has_one` associations to wire-up how our data is related at the context level, but remember this is decoupled from our web-facing user input. To associate user input to our schema associations, we need to handle it the way we've handled other user input so far – in changesets. Modify your `create_user/1` and `update_user/2` functions in your `Accounts` context to build a changeset which knows how to cast user input with nested credential information:
+We used Ecto's `belongs_to` and `has_one` associations to wire-up how our data is related at the context level, but remember this is decoupled from our web-facing user input. To associate user input to our schema associations, we need to handle it the way we've handled other user input so far – in changesets. Remove the alias for Credential added by the generator and modify your `alias Hello.Accounts.User`, `create_user/1` and `update_user/2` functions in your `Accounts` context to build a changeset which knows how to cast user input with nested credential information:
 
 ```elixir
+- alias Hello.Accounts.User
++ alias Hello.Accounts.{User, Credential}
+
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
-    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
++   |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.update()
   end
 
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
-    |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
++   |> Ecto.Changeset.cast_assoc(:credential, with: &Credential.changeset/2)
     |> Repo.insert()
   end
+
+- alias Hello.Accounts.Credential
 ```
 We updated the functions to pipe our user changeset into `Ecto.Changeset.cast_assoc/2`. Ecto's `cast_assoc/2` allows us to tell the changeset how to cast user input to a schema relation. We also used the `:with` option to tell Ecto to use our `Credential.changeset/2` function to cast the data. This way, any validations we perform in `Credential.changeset/2` will be applied when saving the `User` changeset.
 
@@ -424,7 +429,7 @@ It's not much to look at yet, but it works! We added relationships within our co
 
 ## Adding Account functions
 
-As we've seen, your context modules are dedicated modules that expose and group related functionality. Phoenix generates generic functions, such as `list_users` and `update_user`, but they only serve as a basis for you to grow your business logic and application from. To begin extending our `Accounts` context with real features, let's address an obvious issue of our application – we can create users with credentials in our system, but they have no way of signing in with those credentials. Building a complete user authentication system is beyond the scope of this guide, but let's get started with a basic email-only sign-in page that allows us to track a current user's session. This will let us focus on extending our `Accounts` context while giving you a good start to grow a complete authentication solution from.
+As we've seen, your context modules are dedicated modules that expose and group related functionality. Phoenix generates generic functions, such as `list_users` and `update_user`, but they only serve as a basis for you to grow your business logic and application from. To begin extending our `Accounts` context with real features, let's address an obvious issue of our application – we can create users with credentials in our system, but they have no way of signing in with those credentials. Building a complete user authentication system is beyond the scope of this guide, but let's get started with a basic email-only sign-in page that allows us to track a current user's session. This will let us focus on extending our `Accounts` context while giving you a good start to grow a complete authentication solution from.
 
 To start, let's think of a function name that describes what we want to accomplish. To authenticate a user by email address, we'll need a way to lookup that user and verify their entered credentials are valid. We can do this by exposing a single function on our `Accounts` context.
 
@@ -609,7 +614,7 @@ Remember to update your repository by running migrations:
 
 ```
 
-This time we passed the `--web` option to the generator. This tells Phoenix what namespace to use for the web modules, such as controllers and views. This is useful when you have conflicting resources in the system, such as our existing `PageController`, as well as a way to naturally namespace paths and functionality of different features, like a CMS system. Phoenix instructed us to add a new `scope` to the router for a `"/cms"` path prefix. Let's copy paste the following into our `lib/hello_web/router.ex`, but we'll make one modification to the `pipe_through` macro:
+This time we passed the `--web` option to the generator. This tells Phoenix what namespace to use for the web modules, such as controllers and views. This is useful when you have conflicting resources in the system, such as our existing `PageController`, as well as a way to naturally namespace paths and functionality of different features, like a CMS system. Phoenix instructed us to add a new `scope` to the router for a `"/cms"` path prefix. Let's copy paste the following into our `lib/hello_web/router.ex`, but we'll make one modification to the `pipe_through` macro:
 
 
 ```
