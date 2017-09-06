@@ -271,7 +271,7 @@ When we connect, we'll often need to authenticate the client. Fortunately, this 
 
 **Step 1 - Assign a Token in the Connection**
 
-Let's say we have an authentication plug in our app called `OurAuth`. When `OurAuth` authenticates a user, it sets a value for the `:current_user` key in `conn.assigns`. Since the `current_user` exists, we can simply assign the user's token in the connection for use in the layout. We can wrap that behavior up in a private function plug, `put_user_token/2`. To make this all work, we just add `OurAuth` and `put_user_token/2` to the browser pipeline.
+Let's say we have an authentication plug in our app called `OurAuth`. When `OurAuth` authenticates a user, it sets a value for the `:current_user` key in `conn.assigns`. Since the `current_user` exists, we can simply assign the user's token in the connection for use in the layout. We can wrap that behavior up in a private function plug, `put_user_token/2`. This could also be put in its own module as well. To make this all work, we just add `OurAuth` and `put_user_token/2` to the browser pipeline.
 
 ```elixir
 pipeline :browser do
