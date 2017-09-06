@@ -28,8 +28,8 @@ complete, the better.
 - We use the "console" code fence for iex and shell commands.
 - We use the "html" code fence for html templates, even if there is elixir code
   in the template.
-- We use backtics for filenames and directory paths.
-- We use backtics for module names, function names, and variable names.
+- We use backticks for filenames and directory paths.
+- We use backticks for module names, function names, and variable names.
 
 #### Pull requests
 
