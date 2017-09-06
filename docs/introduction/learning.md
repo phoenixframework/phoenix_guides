@@ -6,6 +6,7 @@ Here's a list of other resources for learning about Phoenix and some of the proj
 
 #### Books
 - [Programming Phoenix](https://pragprog.com/book/phoenix/programming-phoenix) (print and ebook)
+- [Phoenix Inside Out Series](https://shankardevy.com/phoenix-book) (3 books and 1 booklet - ebook only)
 
 #### Online Resources
 - [The Phoenix Project](https://github.com/phoenixframework/phoenix)
