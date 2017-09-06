@@ -14,19 +14,19 @@ We can generate that resource like this.
 
 ```console
 $ mix phx.gen.json Rosters Player players name:string position:string number:integer
-* creating lib/hello/controllers/player_controller.ex
-* creating lib/hello/views/player_view.ex
-* creating test/hello/controllers/player_controller_test.exs
-* creating lib/hello/views/changeset_view.ex
-* creating lib/hello/controllers/fallback_controller.ex
+* creating lib/hello_web/controllers/player_controller.ex
+* creating lib/hello_web/views/player_view.ex
+* creating test/hello_web/controllers/player_controller_test.exs
+* creating lib/hello_web/views/changeset_view.ex
+* creating lib/hello_web/controllers/fallback_controller.ex
 * creating lib/hello/rosters/player.ex
-* creating priv/repo/migrations/20170906132454_create_players.exs
+* creating priv/repo/migrations/20170906203425_create_players.exs
 * creating lib/hello/rosters/rosters.ex
 * injecting lib/hello/rosters/rosters.ex
 * creating test/hello/rosters/rosters_test.exs
 * injecting test/hello/rosters/rosters_test.exs
 
-Add the resource to your :api scope in lib/hello/router.ex:
+Add the resource to your :api scope in lib/hello_web/router.ex:
 
     resources "/players", PlayerController, except: [:new, :edit]
 
@@ -88,7 +88,7 @@ defmodule Hello.Rosters.Player do
   . . .
 ```
 
-There's just one more thing we'll need to do, and that's remove the reference to `id: player.id,` in the `def render("player.json", %{player: player})` function body in `lib/hello/views/player_view.ex`.
+There's just one more thing we'll need to do, and that's remove the reference to `id: player.id,` in the `def render("player.json", %{player: player})` function body in `lib/hello_web/views/player_view.ex`.
 
 ```elixir
 defmodule HelloWeb.PlayerView do

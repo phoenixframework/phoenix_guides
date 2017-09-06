@@ -249,7 +249,7 @@ Compiling 17 files (.ex)
 If we don't want to create a context or schema for our resource we can use the `--no-context` flag.  Note that this still requires a context module name as a parameter.
 
 ```console
-$ mix phx.gen.html Flog Post posts body:string word_count:integer --no-context
+$ mix phx.gen.html Blog Post posts body:string word_count:integer --no-context
 * creating lib/hello_web/controllers/post_controller.ex
 * creating lib/hello_web/templates/post/edit.html.eex
 * creating lib/hello_web/templates/post/form.html.eex
@@ -322,7 +322,7 @@ Compiling 15 files (.ex)
 
 #### `mix phx.gen.json`
 
-Phoenix also offers the ability to generate all the code to stand up a complete JSON resource - ecto migration, ecto context, controller with all the necessary actions and view. This command will not create any template for the app.
+Phoenix also offers the ability to generate all the code to stand up a complete JSON resource - ecto migration, ecto schema, controller with all the necessary actions and view. This command will not create any template for the app.
 
 The `phx.gen.json` task takes a number of arguments, the module name of the context, the module name of the schema, the resource name, and a list of column_name:type attributes. The module name we pass in must conform to the Elixir rules of module naming, following proper capitalization.
 
