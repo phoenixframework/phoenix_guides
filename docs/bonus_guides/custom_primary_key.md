@@ -14,19 +14,19 @@ We can generate that resource like this.
 
 ```console
 $ mix phx.gen.json Rosters Player players name:string position:string number:integer
-* creating lib/hello_world_web/controllers/player_controller.ex
-* creating lib/hello_world_web/views/player_view.ex
-* creating test/hello_world_web/controllers/player_controller_test.exs
-* creating lib/hello_world_web/views/changeset_view.ex
-* creating lib/hello_world_web/controllers/fallback_controller.ex
-* creating lib/hello_world/rosters/player.ex
+* creating lib/hello/controllers/player_controller.ex
+* creating lib/hello/views/player_view.ex
+* creating test/hello/controllers/player_controller_test.exs
+* creating lib/hello/views/changeset_view.ex
+* creating lib/hello/controllers/fallback_controller.ex
+* creating lib/hello/rosters/player.ex
 * creating priv/repo/migrations/20170906132454_create_players.exs
-* creating lib/hello_world/rosters/rosters.ex
-* injecting lib/hello_world/rosters/rosters.ex
-* creating test/hello_world/rosters/rosters_test.exs
-* injecting test/hello_world/rosters/rosters_test.exs
+* creating lib/hello/rosters/rosters.ex
+* injecting lib/hello/rosters/rosters.ex
+* creating test/hello/rosters/rosters_test.exs
+* injecting test/hello/rosters/rosters_test.exs
 
-Add the resource to your :api scope in lib/hello_world_web/router.ex:
+Add the resource to your :api scope in lib/hello/router.ex:
 
     resources "/players", PlayerController, except: [:new, :edit]
 
@@ -39,7 +39,7 @@ The first thing we need to do is add the resources route to the `api` scope in t
 
 ```elixir
 . . .
-scope "/api", HelloWorldWeb do
+scope "/api", HelloWeb do
   pipe_through :api
 
   resources "/players", PlayerController
@@ -52,7 +52,7 @@ Now we'll need to make a few quick changes to the generated files.
 Let's take a look at the migration first, `priv/repo/migrations/20170906132454_create_players.exs`. We'll need to do two things. The first is to pass in a second argument - `primary_key: false` to the `table/2` function so that it won't create a primary_key. Then we'll need to pass `primary_key: true` to the `add/3` function for the name field to signal that it will be the primary_key instead.
 
 ```elixir
-defmodule HelloWorld.Repo.Migrations.CreatePlayers do
+defmodule Hello.Repo.Migrations.CreatePlayers do
   use Ecto.Migration
 
   def change do
@@ -68,10 +68,10 @@ defmodule HelloWorld.Repo.Migrations.CreatePlayers do
 end
 ```
 
-Let's move on to `lib/hello_world/rosters/player.ex` next. We'll need to add a module attribute `@primary_key {:name, :string, []}` describing our primary key as a string. Then we'll need to tell Phoenix how to convert our data structure to an ID that is used in the routes: `@derive {Phoenix.Param, key: :name}`. We'll also need to remove the `field :name, :string` line because this is our new primary key. If this seems unusual, recall that the schema doesn't list the `id` field in schemas where `id` is the primary key.
+Let's move on to `lib/hello/rosters/player.ex` next. We'll need to add a module attribute `@primary_key {:name, :string, []}` describing our primary key as a string. Then we'll need to tell Phoenix how to convert our data structure to an ID that is used in the routes: `@derive {Phoenix.Param, key: :name}`. We'll also need to remove the `field :name, :string` line because this is our new primary key. If this seems unusual, recall that the schema doesn't list the `id` field in schemas where `id` is the primary key.
 
 ```elixir
-defmodule HelloWorld.Rosters.Player do
+defmodule Hello.Rosters.Player do
   use Ecto.Schema
 
   . . .
@@ -88,11 +88,11 @@ defmodule HelloWorld.Rosters.Player do
   . . .
 ```
 
-There's just one more thing we'll need to do, and that's remove the reference to `id: player.id,` in the `def render("player.json", %{player: player})` function body in `lib/hello_world_web/views/player_view.ex`.
+There's just one more thing we'll need to do, and that's remove the reference to `id: player.id,` in the `def render("player.json", %{player: player})` function body in `lib/hello/views/player_view.ex`.
 
 ```elixir
-defmodule HelloWorldWeb.PlayerView do
-  use HelloWorldWeb, :view
+defmodule HelloWeb.PlayerView do
+  use HelloWeb, :view
 
   . . .
 
@@ -135,7 +135,7 @@ In some cases, you will want two or more fields to make up the primary key. In
 this case, the syntax becomes:
 
 ```elixir
-defmodule HelloWorld.Repo.Migrations.CreatePlayers do
+defmodule Hello.Repo.Migrations.CreatePlayers do
   use Ecto.Migration
 
   def change do
@@ -150,7 +150,7 @@ defmodule HelloWorld.Repo.Migrations.CreatePlayers do
 and
 
 ```elixir
-defmodule HelloWorld.Rosters.Player do
+defmodule Hello.Rosters.Player do
   use Ecto.Schema
 
   @primary_key false
@@ -166,11 +166,11 @@ With composite primary keys, you can no longer use get/3 or get!/3,
 but you have to use the more generic get_by/3 or get_by!/3, like so:
 
 ```elixir
-defmodule HelloWorld.Rosters do
+defmodule Hello.Rosters do
   import Ecto.Query, warn: false
-  alias HelloWorld.Repo
+  alias Hello.Repo
 
-  alias HelloWorld.Rosters.Player
+  alias Hello.Rosters.Player
 
   . . .
 
