@@ -2,22 +2,51 @@
 
 We're going to take a look at how we might test drive a controller which has endpoints for a JSON api.
 
-Phoenix has a generator for creating a JSON resource which looks like this:
-
 ### Set up
-```bash
-mix phoenix.gen.json Thing things some_attr:string another_attr:string
-```
 
-Thing is the Model, things is the table name, and some_attr and another_attr are database columns on table things of type string. Don't run this command, we're going to explore test driving out a similar result to what a generator would give us.
-
-Let's create a `User` model. Since model creation is not in scope of this guide, we will use the generator. If you aren't familiar, read [this section of the Mix guide](mix_tasks.html#phoenix-specific-mix-tasks).
+First create a blank project by running
 
 ```bash
-$ mix phoenix.gen.model User users name:string email:string
+mix phx.new hello_phoenix -y
 ```
 
-Now run migrations:
+Change into the newly-created `hello_phoenix` directory, configure
+your database in `config/dev.exs` and then run
+
+```bash
+mix ecto.create
+```
+
+If you have any questions about this process, now is a good time to
+jump over to the [Up and Running Guide](up_and_running.html).
+
+
+At this point, in a real project, you might reach for the Phoenix
+generator for creating a JSON resource which looks like this:
+
+```bash
+mix phx.gen.json  AllTheThings Thing things some_attr:string another_attr:string
+```
+
+In this command, AllTheThings is the Context; Thing is the Schema;
+things is the plural name of the schema (which is used as the table
+name).  Then some_attr and another_attr are the database columns on
+table `things` of type string.
+
+However, *don't* actually run this command right now.  Instead, we're
+going to explore test driving out a similar result to what a generator
+would give us.
+
+Let's create an `Accounts` context for this example.. Since context
+creation is not in scope of this guide, we will use the generator.
+For more in-depth coverage of what a context is, read [the Contexts
+Guide](contexts.html#content)
+
+```bash
+$ mix phx.gen.context Accounts User users name:string email:string password:string
+```
+
+Now run the migration:
 
 ```bash
 $ mix ecto.migrate
