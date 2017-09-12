@@ -99,8 +99,8 @@ TDDing this. Create a `user_controller_test.exs` file in
 ```elixir
 # test/hello_phoenix_web/controllers/user_controller_test.exs
 
-defmodule HelloPhoenix.UserControllerTest do
-  use HelloPhoenix.ConnCase
+defmodule HelloPhoenixWeb.UserControllerTest do
+  use HelloPhoenixWeb.ConnCase
 
 end
 ```
@@ -110,8 +110,8 @@ There are many ways to approach TDD. Here, we will think about each action we wa
 ```elixir
 # test/hello_phoenix_web/controllers/user_controller_test.exs
 
-defmodule HelloPhoenix.UserControllerTest do
-  use HelloPhoenix.ConnCase
+defmodule HelloPhoenixWeb.UserControllerTest do
+  use HelloPhoenixWeb.ConnCase
 
   test "index/2 responds with all Users"
 
