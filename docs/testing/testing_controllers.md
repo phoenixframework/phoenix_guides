@@ -7,14 +7,14 @@ We're going to take a look at how we might test drive a controller which has end
 First create a blank project by running
 
 ```bash
-mix phx.new hello_phoenix -y
+$ mix phx.new hello_phoenix -y
 ```
 
 Change into the newly-created `hello_phoenix` directory, configure
 your database in `config/dev.exs` and then run
 
 ```bash
-mix ecto.create
+$ mix ecto.create
 ```
 
 If you have any questions about this process, now is a good time to
@@ -25,7 +25,7 @@ At this point, in a real project, you might reach for the Phoenix
 generator for creating a JSON resource which looks like this:
 
 ```bash
-mix phx.gen.json  AllTheThings Thing things some_attr:string another_attr:string
+$ mix phx.gen.json  AllTheThings Thing things some_attr:string another_attr:string
 ```
 
 In this command, AllTheThings is the Context; Thing is the Schema;
@@ -43,10 +43,13 @@ For more in-depth coverage of what a context is, read [the Contexts
 Guide](contexts.html#content)
 
 ```bash
-$ mix phx.gen.context Accounts User users name:string email:string password:string
+$ mix phx.gen.context Accounts User users name:string email:string:unique password:string
 ```
 
-Now run the migration:
+Ordinarily we would spend time tweaking the generated migration file
+(`priv/repo/migrations/<datetime>_create_users.exs`) to add things
+like non-null constraints and so on, but we don't care about that for
+this example.  Just run the migration:
 
 ```bash
 $ mix ecto.migrate
