@@ -57,13 +57,50 @@ $ mix ecto.migrate
 
 ### Test driving
 
-What we are going for is a controller with the standard CRUD actions. We'll start with our test since we're TDDing this. Create a `user_controller_test.exs` file in `test/controllers`
+We will be using Test Driven Development (TDD) to develop our code.
+The first step with TDD is to make sure the tests pass as is!  To do
+this run:
+
+```bash
+$ mix test
+```
+
+The tests created by the code generators out of the box should
+pass. On the other hand, if you've done anything interesting with your
+database setup in `config/dev.exs`, you might run into an error here.
+To fix this error, take a look at `config/test.exs` and see if any
+settings from `dev.exs` need to be copied over.
+
+For example, if the database port is at some non-standard setting,
+then running `mix test` will generate this kind of error:
+
+```bash
+** (Mix) The database for HelloPhoenix.Repo couldn't be created: FATAL 3D000 (invalid_catalog_name): database "postgres" does not exist
+
+16:04:56.704 [error] GenServer #PID<0.3290.0> terminating
+** (Postgrex.Error) FATAL 3D000 (invalid_catalog_name): database "postgres" does not exist
+    (db_connection) lib/db_connection/connection.ex:148: DBConnection.Connection.connect/2
+    (connection) lib/connection.ex:622: Connection.enter_connect/5
+    (stdlib) proc_lib.erl:247: :proc_lib.init_p_do_apply/3
+Last message: nil
+```
+
+These sorts of issues can usually be fixed by just examining
+both `dev.exs` and `test.exs` and making the necessary edits to
+`test.exs`.  Also, it is always best to handle these issues *before*
+creating tests that you expect to fail!
+
+Once the baseline tests are passing without any issues, it is time to
+move on to actual development.  What we are going for is a controller
+with the standard CRUD actions. We'll start with our test since we're
+TDDing this. Create a `user_controller_test.exs` file in
+`test/hello_phoenix_web/controllers`
 
 ```elixir
-# test/controllers/user_controller_test.exs
+# test/hello_phoenix_web/controllers/user_controller_test.exs
 
 defmodule HelloPhoenix.UserControllerTest do
-  use HelloPhoenix.ConnCase, async: true
+  use HelloPhoenix.ConnCase
 
 end
 ```
@@ -71,10 +108,10 @@ end
 There are many ways to approach TDD. Here, we will think about each action we want to perform, and handle the "happy path" where things go as planned, and the error case where something goes wrong, if applicable.
 
 ```elixir
-# test/controllers/user_controller_test.exs
+# test/hello_phoenix_web/controllers/user_controller_test.exs
 
 defmodule HelloPhoenix.UserControllerTest do
-  use HelloPhoenix.ConnCase, async: true
+  use HelloPhoenix.ConnCase
 
   test "index/2 responds with all Users"
 
