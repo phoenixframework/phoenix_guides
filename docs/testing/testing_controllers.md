@@ -142,50 +142,80 @@ Create, show and update have more typical ways to fail because they need a way t
 Let's run the test:
 
 ```bash
-$ mix test test/controllers/user_controller_test.exs
+$ mix test test/hello_phoenix_web/controllers/user_controller_test.exs
 ```
 
-We get 8 failures that say "Not yet implemented" which is good. Our tests don't have blocks yet.
+We get 8 failures that say "Not implemented" which is good. Our tests don't have blocks yet.
 
 Let's add our first test. We'll start with `index/2`.
 
 ```elixir
-defmodule HelloPhoenix.UserControllerTest do
-  use HelloPhoenix.ConnCase, async: true
+# test/hello_phoenix_web/controllers/user_controller_test.exs
 
-  alias HelloPhoenix.{Repo, User}
+defmodule HelloPhoenixWeb.UserControllerTest do
+  use HelloPhoenixWeb.ConnCase
 
-  test "index/2 responds with all Users" do
-    users = [ User.changeset(%User{}, %{name: "John", email: "john@example.com"}),
-              User.changeset(%User{}, %{name: "Jane", email: "jane@example.com"}) ]
+  alias HelloPhoenix.Accounts
 
-    Enum.each(users, &Repo.insert!(&1))
+  @user1_attrs %{email: "grobblefruit@example.org", name: "grobblefruit", password: "surf and skate"}
 
-    response = build_conn
-    |> get(user_path(build_conn, :index))
+  # setup creates user1 for all tests, and generates the conn
+  setup do
+    {:ok, user} = Accounts.create_user(@user1_attrs)
+    conn = build_conn()
+    {:ok, conn: conn, user: user }
+  end
+
+  test "index/2 responds with all Users", %{conn: conn, user: user} do
+
+    response = conn
+    |> get(user_path(conn, :index))
     |> json_response(200)
 
     expected = %{
       "data" => [
-        %{ "name" => "John", "email" => "john@example.com" },
-        %{ "name" => "Jane", "email" => "jane@example.com" }
+        %{ "email" => user.email, "name" => user.name }
       ]
     }
 
     assert response == expected
+
   end
 ```
-Let's take a look at what's going on here. We build our users, and use the `get` function to make a `GET` request to our `UserController` index action, which is piped into `json_response/2` along with the expected HTTP status code. This will return the JSON from the response body, when everything is wired up properly. We represent the JSON we want the controller action to return with the variable `expected`, and assert that the `response` and `expected` are the same.
 
-Our expected data is a JSON response with a top level key of `"data"` containing an array of users that have `"name"` and `"email"` properties.
+Let's take a look at what's going on here. First, some attributes for
+a valid user are defined, and then a [`setup`
+block](https://hexdocs.pm/ex_unit/1.5.1/ExUnit.Callbacks.html#content)
+is used to create that user before each test.  The `setup` block also
+creates a `conn` variable to be used in each test.  The `conn` and
+`user` are then returned as a map from the `setup` block, and so are
+merged into the context that is passed to each test.
+
+The index test then hooks into the context to extract the contents of
+the `conn:` and `user:` keys.  The `conn` is piped to a `get` function
+to make a `GET` request to our `UserController` index action, which is
+in turn piped into `json_response/2` along with the expected HTTP status code. This will return the JSON from the response body, when everything is wired up properly. We represent the JSON we want the controller action to return with the variable `expected`, and assert that the `response` and `expected` are the same.
+
+Our expected data is a JSON response with a top level key of `"data"`
+containing an array of users that have `"name"` and `"email"`
+properties that should match those of the `user` object loaded into
+the context by the `setup` function.  Even though the user also has a
+"password" property, we don't want our JSON API spitting out the
+passwords, and so we do not expect to see the password in the returned
+JSON.
 
 When we run the test we get an error that we have no `user_path` function.
 
-In our router, we'll add a resource for `User` in our API pipe:
+In our router, we'll uncomment the `api` scope at the bottom of the
+auto-generated file, and then add a resource for `User` in the API.
+Because we aren't going to be generating HTML forms to create and edit
+users, we add the `except: [:new, :edit]` to skip those endpoints.
 
 ```elixir
-defmodule HelloPhoenix.Router do
-  use HelloPhoenix.Web, :router
+# lib/hello_phoenix_web/router.ex
+
+defmodule HelloPhoenixWeb.Router do
+  use HelloPhoenixWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -197,46 +227,99 @@ defmodule HelloPhoenix.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    resources "/users", HelloPhoenix.UserController
   end
 
-  #...
+  scope "/", HelloPhoenixWeb do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
+  end
+
+  # Other scopes may use custom stacks.
+  scope "/api", HelloPhoenixWeb do
+    pipe_through :api
+    resources "/users", UserController, except: [:new, :edit]
+  end
+end
+
 ```
 
-We should get a new error now. Running the test informs us we don't have a `UserController`. Let's add it, along with the `index/2` action we're testing. Our test description has us returning all users:
+Before running the test again, check out our new paths by running
+
+```bash
+$ mix phx.routes
+```
+
+You should see six new routes in addition to the default '/' route:
+
+```bash
+page_path  GET     /               HelloPhoenixWeb.PageController :index
+user_path  GET     /api/users      HelloPhoenixWeb.UserController :index
+user_path  GET     /api/users/:id  HelloPhoenixWeb.UserController :show
+user_path  POST    /api/users      HelloPhoenixWeb.UserController :create
+user_path  PATCH   /api/users/:id  HelloPhoenixWeb.UserController :update
+           PUT     /api/users/:id  HelloPhoenixWeb.UserController :update
+user_path  DELETE  /api/users/:id  HelloPhoenixWeb.UserController :delete
+```
+
+Note that all of these routes use `HelloPhoenixWeb.UserController`.
+If you run the test now, you'll get a new error informing us that we
+don't yet have a `UserController`. Let's add it, along with the `index/2` action we're testing. Our test description has us returning all users:
 
 ```elixir
-defmodule HelloPhoenix.UserController do
-  use HelloPhoenix.Web, :controller
+# lib/hello_phoenix_web/controllers/user_controller.ex
 
-  alias HelloPhoenix.{User, Repo}
+defmodule HelloPhoenixWeb.UserController do
+  use HelloPhoenixWeb, :controller
+  alias HelloPhoenix.Accounts
 
   def index(conn, _params) do
-    users = Repo.all(User)
-    render conn, "index.json", users: users
+    users = Accounts.list_users()
+    render(conn, "index.json", data: users)
   end
 
 end
 ```
+
+The controller uses the `Accounts` context module's functions to
+access the underlying data store.  Here all users are retrieved by
+calling `Accounts.list_users()`.
 
 When we run the test again, our failing test tells us we have no view. Let's add it. Our test specifies a JSON format with a top key of `"data"`, containing an array of users with attributes `"name"` and `"email"`.
 
 ```elixir
-defmodule HelloPhoenix.UserView do
-  use HelloPhoenix.Web, :view
+# lib/hello_phoenix_web/views/user_view.ex
 
-  def render("index.json", %{users: users}) do
-    %{data: render_many(users, HelloPhoenix.UserView, "user.json")}
+defmodule HelloPhoenixWeb.UserView do
+  use HelloPhoenixWeb, :view
+
+  def render("index.json", %{data: users}) do
+    %{data:
+      render_many( users, HelloPhoenixWeb.UserView, "user.json", as: :data)
+      }
   end
 
-  def render("user.json", %{user: user}) do
-    %{name: user.name, email: user.email}
+  def render("user.json", %{data: user}) do
+    %{
+      name: user.name,
+      email: user.email
+      # inserted_at: user.inserted_at,
+      # updated_at: user.updated_at
+    }
   end
-
 end
 ```
 
-And with that, our test passes when we run it.
+The view module for the index uses the `render_many/4` function.
+According to the
+[documentation](https://hexdocs.pm/phoenix/Phoenix.View.html#render_many/4),
+using `render_many/4` is "roughly equivalent" to using `Enum.map/2`,
+and in fact `Enum.map` is called under the hood.  The main difference
+is that the rendering step is kept within the `render` function, which
+means the code benefits from library-quality error checking and so on.
+
+
+And with that, one of the eight tests passes when we run it!
 
 We'll also cover the `show/2` action here so we can see how to handle an error case.
 
@@ -278,7 +361,7 @@ This is very similar to our `index/2` test, except `show/2` requires a user id, 
 When we run our test tells us we need a `show/2` action.
 
 ```elixir
-defmodule HelloPhoenix.UserController do
+defmodule HelloPhoenixWeb.UserController do
   use HelloPhoenix.Web, :controller
 
   alias HelloPhoenix.{User, Repo}
