@@ -121,7 +121,7 @@ defmodule HelloPhoenixWeb.UserControllerTest do
   end
 
   describe "show/2" do
-    test "Responds with a newly created user if the user is found"
+    test "Responds with user details if the user is found"
     test "Responds with a message indicating user not found"
   end
 
@@ -321,36 +321,41 @@ means the code benefits from library-quality error checking and so on.
 
 And with that, one of the eight tests passes when we run it!
 
+### Time for the Show
+
 We'll also cover the `show/2` action here so we can see how to handle an error case.
 
 Our show tests currently look like this:
 
 ```elixir
   describe "show/2" do
-    test "Responds with a newly created user if the user is found"
+    test "Responds with user details if the user is found"
     test "Responds with a message indicating user not found"
   end
 ```
 
-Run this test only by running the following command: (if your show tests don't start on line 32, change the line number accordingly)
+Run this test only by running the following command: (if your show tests don't start on line 45, change the line number accordingly)
 
 ```bash
-$ mix test test/controllers/user_controller_test.exs:32
+$ mix test test/hello_phoenix_web/controllers/user_controller_test.exs:45
 ```
 
 Our first `show/2` test result is, as expected, not yet implemented.
 Let's build a test around what we think a successful `show/2` should look like.
 
 ```elixir
-test "Responds with a newly created user if the user is found" do
-  user = User.changeset(%User{}, %{name: "John", email: "john@example.com"})
-  |> Repo.insert!
+# test/hello_phoenix_web/controllers/user_controller_test.exs line 45
 
-  response = build_conn
-  |> get(user_path(build_conn, :show, user.id))
+test "Responds with user details if the user is found", %{conn: conn, user: user} do
+  response = conn
+  |> get(user_path(conn, :show, user.id))
   |> json_response(200)
 
-  expected = %{ "data" => %{ "name" => "John", "email" => "john@example.com" } }
+  expected = %{
+    "data" =>
+    %{ "email" => user.email, "name" => user.name }
+
+  }
 
   assert response == expected
 end
@@ -358,47 +363,72 @@ end
 
 This is very similar to our `index/2` test, except `show/2` requires a user id, and our data is a single JSON object instead of an array.
 
-When we run our test tells us we need a `show/2` action.
+When we run our test the error tells us we need a `show/2` action.
 
 ```elixir
-defmodule HelloPhoenixWeb.UserController do
-  use HelloPhoenix.Web, :controller
+# lib/hello_phoenix_web/controllers/user_controller.ex
 
-  alias HelloPhoenix.{User, Repo}
+defmodule HelloPhoenixWeb.UserController do
+  use HelloPhoenixWeb, :controller
+  require Logger
+
+  alias HelloPhoenix.Accounts
 
   def index(conn, _params) do
-    users = Repo.all(User)
-    render conn, "index.json", users: users
+    users = Accounts.list_users()
+    render(conn, "index.json", data: users)
   end
 
   def show(conn, %{"id" => id}) do
-    case Repo.get(User, id) do
-      user -> render conn, "show.json", user: user
-    end
+    # try do
+      user = Accounts.get_user!(id)
+      render conn, "show.json", data: user
+    # catch
+    # end
+
   end
+
 end
 ```
 
-You'll notice we only handle the case where we successfully find a user. When we TDD we only want to write enough code to make the test pass. We'll add more code when we get to the error handling test for `show/2`.
+You'll notice we only handle the case where we successfully find a
+user. When we TDD we only want to write enough code to make the test
+pass. We'll add more code when we get to the error handling test for
+`show/2`.  However, because the standard `get_user!/1` function throws
+an error if it can't find the specified id, we've wrapped the call in
+a commented out "try/catch" block.  Sure this is borderline
+schizophrenic, but sometimes life intervenes and interrupts the
+programming flow. Often it is wise to do small things like this as
+little reminders of things that need to be done.
 
 Running the test tells us we need a `render/2` function that can pattern match on `"show.json"`:
 
 ```elixir
-defmodule HelloPhoenix.UserView do
-  use HelloPhoenix.Web, :view
+# lib/hello_phoenix_web/views/user_view.ex
 
-  def render("index.json", %{users: users}) do
-    %{data: render_many(users, HelloPhoenix.UserView, "user.json")}
+defmodule HelloPhoenixWeb.UserView do
+  use HelloPhoenixWeb, :view
+
+  def render("index.json", %{data: users}) do
+    %{data:
+      render_many( users, HelloPhoenixWeb.UserView, "user.json", as: :data)
+      }
   end
 
-  def render("show.json", %{user: user}) do
-    %{data: render_one(user, HelloPhoenix.UserView, "user.json")}
+  def render("show.json", %{data: user}) do
+    %{data:
+      render_one( user, HelloPhoenixWeb.UserView, "user.json", as: :data)
+      }
   end
 
-  def render("user.json", %{user: user}) do
-    %{name: user.name, email: user.email}
+  def render("user.json", %{data: user}) do
+    %{
+      name: user.name,
+      email: user.email
+      # inserted_at: user.inserted_at,
+      # updated_at: user.updated_at
+    }
   end
-
 end
 ```
 
@@ -408,41 +438,292 @@ The last item we'll cover is the case where we don't find a user in `show/2`.
 
 Try this one on your own and see what you come up with. One possible solution will be given below.
 
-Walking through our TDD steps, we add a test that supplies a non existent user id to `user_path` which returns a 404 status and an error message:
+Walking through our TDD steps, we add a test that supplies a
+non-existent user id to `user_path` which returns a 404 status and an
+error message.  One thing to keep in mind is that database ids tend to
+start at 1 and increase forever.  Picking a large number is a reasonably safe
+strategy, but there is a small chance that at some point a number that
+seems large when you write the code is smack dab in the middle of the
+numbers being allocated.  On the other hand, negative numbers are
+perfectly valid integers, and yet never used for database ids.  So
+we'll pick -1 as our "unobtainable" user id, which should always fail.
 
 ```elixir
-test "Responds with a message indicating user not found" do
-  response = build_conn
-  |> get(user_path(build_conn, :show, 300))
+# test/hello_phoenix_web/controllers/user_controller_test.exs line 58-ish
+
+test "Responds with a message indicating user not found", %{conn: conn} do
+  response = conn
+  |> get(user_path(conn, :show, -1 ))
   |> json_response(404)
 
-  expected = %{ "error" => "User not found." }
+  expected = %{
+    "errors" => "Resource not found"
+  }
 
   assert response == expected
 end
 ```
 
-We want a HTTP code of 404 to notify the requester that this resource was not found, as well as an accompanying error message.
+If you run the test now, you will probably just see the server throw
+"Ecto.NoResultsError" or something similar, due to the `get_user!/1`
+function that we *knew* would throw.  What we want is an HTTP code of
+404 to notify the requester that this resource was not found, as well
+as an accompanying error message.  (By the way, a good generic resource for
+HTTP status codes can be found in the [MDN web
+docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).  A
+corresponding resource for the status codes allowed by Plug can be
+found in the [Plug.Conn.Status documentation](https://hexdocs.pm/plug/Plug.Conn.Status.html).)
 
-Our controller action:
+Our controller action fleshes out the try/catch block we skipped over before:
 
 ```elixir
+# lib/hello_phoenix_web/controllers/user_controller.ex line 12
+
 def show(conn, %{"id" => id}) do
-  case Repo.get(User, id) do
-    nil -> conn |> put_status(404) |> render("error.json")
-    user -> render conn, "show.json", user: user
+  try do
+    user = Accounts.get_user!(id)
+    render conn, "show.json", data: user
+  catch
+    :error, message ->
+      conn
+      |> put_status(:not_found)
+      |> render( HelloPhoenixWeb.ErrorView, "400.json", reason: message )
   end
 end
 ```
 
-And our view:
+In the catch statement, there are two important things going on.
+First we use the
+[`put_status/2`](https://hexdocs.pm/plug/Plug.Conn.html#put_status/2)
+function from `Plug.Conn` to set the desired error status.  As noted
+above, the complete list of allowed codes can be found in the
+[Plug.Conn.Status
+documentation](https://hexdocs.pm/plug/Plug.Conn.Status.html).
+
+Second, we've redirected the view to the `ErrorView` module.  If you
+open that file up, you'll see a few rendering helpers for HTML,
+output, but none for JSON.  We need to add a render function for
+"400.json" as follows:
 
 ```elixir
-def render("error.json", _assigns) do
-  %{error: "User not found."}
-end
+# lib/hello_phoenix_web/views/error_view.ex
+
+defmodule HelloPhoenixWeb.ErrorView do
+  use HelloPhoenixWeb, :view
+
+  def render("404.html", _assigns) do
+    "Page not found"
+  end
+
+  def render("500.html", _assigns) do
+    "Internal server error"
+  end
+
+  def render("400.json", %{reason: reason}) do
+    message = case reason do
+                %Ecto.NoResultsError{} -> "Resource not found"
+                _ -> "I'm afraid I can't do that, Dave"
+              end
+    %{errors: message}
+  end
+
+...
+
 ```
+
+In this render function, we only expect the `%Ecto.NoResultsError{}`
+so far, so we only set that message.  As other errors crop up in our
+code, we can add additional error messages.
 
 With those implemented, our tests pass.
 
-The rest of the controller is left to you to implement as practice. Happy testing!
+The rest of the controller is left to you to implement as practice. To
+help you on your way, below is the fully fleshed out test file.  Of
+course there are lots of edge cases and error conditions that are not
+covered, but it should get you started.
+
+```
+# test/hello_phoenix_web/controllers/user_controller_test.exs
+
+defmodule HelloPhoenixWeb.UserControllerTest do
+  use HelloPhoenixWeb.ConnCase
+
+  alias HelloPhoenix.Accounts
+
+  @user1_attrs %{email: "grobblefruit@example.org", name: "grobblefruit", password: "surf and skate"}
+
+  @user2_attrs %{email: "coffee@coffee.org", name: "espresso", password: "daydream of coffee"}
+
+  @update_attrs %{email: "falada@horsehead.org", name: "goose girl", password: "covered in tar and feathers"}
+
+  @bad_attrs %{email: "", name: "", password: ""}
+
+  # setup creates user1 for all tests, and generates the conn
+  setup do
+    {:ok, user} = Accounts.create_user(@user1_attrs)
+    conn = build_conn()
+    {:ok, conn: conn, user: user }
+  end
+
+
+  test "index/2 responds with all Users", %{conn: conn, user: user} do
+
+    response = conn
+    |> get(user_path(conn, :index))
+    |> json_response(200)
+
+    expected = %{
+      "data" => [
+        %{ "email" => user.email, "name" => user.name }
+      ]
+    }
+
+    assert response == expected
+
+  end
+
+
+  describe "create/2" do
+    test "Creates, and responds with a newly created user if attributes are valid", %{conn: conn} do
+      response = conn
+      |> post( user_path(conn, :create), data: %{ attributes: @user2_attrs } )
+      |> json_response(201)
+      assert( response["data"] == %{"email"=> @user2_attrs.email,
+                                   "name" => @user2_attrs.name}
+      )
+
+    end
+
+    test "Cannot create a user with a duplicate email", %{conn: conn, user: user} do
+      response = conn
+      |> post( user_path(conn, :create), data: %{ attributes: %{"email" => user.email,
+                                                               "name" => @user2_attrs.name,
+                                                               "password" => @user2_attrs.password} } )
+      |> json_response(422)
+      assert( response["errors"] == %{"email"=>  ["has already been taken"]} )
+
+    end
+
+    test "Returns an error and does not create a user if attributes are invalid", %{conn: conn} do
+      response = conn
+      |> post( user_path(conn, :create), data: %{ attributes: @bad_attrs })
+      |> json_response(422)
+      assert( response["errors"] == %{
+        "name" => ["can't be blank"],
+        "email" => ["can't be blank"],
+        "password" => ["can't be blank"] }
+        )
+
+    end
+
+  end
+
+  describe "show/2" do
+    test "Responds with user details if the user is found", %{conn: conn, user: user} do
+      response = conn
+      |> get(user_path(conn, :show, user.id))
+      |> json_response(200)
+
+      expected = %{
+        "data" =>
+        %{ "email" => user.email, "name" => user.name }
+
+      }
+
+      assert response == expected
+    end
+    test "Responds with a message indicating user not found", %{conn: conn} do
+      response = conn
+      |> get(user_path(conn, :show, -1 ))
+      |> json_response(404)
+
+      expected = %{
+        "errors" => "Resource not found"
+      }
+
+      assert response == expected
+    end
+  end
+
+  describe "update/2" do
+    setup do
+      {:ok, user2} = Accounts.create_user(@user2_attrs)
+      {:ok, user2: user2}
+    end
+
+    test "Edits, and responds with the user if attributes are valid", %{conn: conn, user2: user} do
+      response = conn
+      |> put(user_path(conn, :update, user.id ), data: %{ attributes: @update_attrs } )
+      |> json_response(200)
+
+      expected = %{
+        "data" =>
+        %{ "email" => @update_attrs.email, "name" => @update_attrs.name }
+      }
+      assert response == expected
+    end
+    test "Returns the unmodified user if attributes object is empty", %{conn: conn, user: user} do
+
+      response = conn
+      |>put( user_path(conn, :update, user.id ), data: %{ attributes: %{} } )
+      |> json_response(200)
+
+      expected = %{
+        "data" =>
+        %{ "email" => user.email, "name" => user.name }
+      }
+      assert response == expected
+
+    end
+    test "Returns an error and does not edit the user if attributes are invalid", %{conn: conn, user: user} do
+
+      response = conn
+        |> put( user_path(conn, :update, user.id ), data: %{ attributes: @bad_attrs })
+        |> json_response(422)
+
+      assert response["errors"] == %{
+        "name" => ["can't be blank"],
+        "email" => ["can't be blank"]
+      }
+      # by the way, will crash if attributes are set to nil (not a hash)
+    end
+  end
+
+  describe "delete/2" do
+    setup do
+      {:ok, user2} = Accounts.create_user(@user2_attrs)
+      {:ok, user2: user2}
+    end
+
+    test "delete/2 and responds with :ok if the user was deleted", %{conn: conn, user2: user} do
+      r = conn
+      |> delete( user_path(conn, :delete, user.id) )
+
+      assert response(r, 204)
+      response = conn
+      |> get( user_path(conn, :show, user.id) )
+      |> json_response(404)
+
+      assert response["errors"] == "Resource not found"
+
+    end
+    test "delete/2 throws if user doesn't exist", %{conn: conn, user2: user} do
+      r = conn
+      |> delete( user_path(conn, :delete, user.id) )
+
+      assert response(r, 204)
+
+      response = conn
+      |> delete( user_path(conn, :delete, user.id) )
+      |> json_response(404)
+
+      assert response["errors"] == "Resource not found"
+
+    end
+  end
+
+end
+```
+
+
+Happy testing!
