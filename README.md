@@ -1,7 +1,5 @@
-### Welcome to the Phoenix Guides!
+### The Phoenix Guides Have Moved
 
-This is the workspace for the official Phoenix Guides on [http://www.phoenixframework.org/](http://www.phoenixframework.org/). The material here is still a work in progress, but it is becoming more complete all the time.
+The Phoenix Guides now live at https://github.com/phoenixframework/phoenix/tree/master/guides
 
-Phoenix itself is moving fast. Those of us who have contributed to these guides are doing our best to keep up with the changes. Wherever possible, we have noted differences between what works on the master branch and what works on the latest stable release. Still, we may miss things.
-
-The good news is, we love pull requests! Please do submit additions or corrections. The guides will be better for us all.
+Any issues and pull requests for the guides should be raised at https://github.com/phoenixframework/phoenix/issues
