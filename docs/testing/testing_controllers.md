@@ -6,14 +6,14 @@ We're going to take a look at how we might test drive a controller which has end
 
 First create a blank project by running
 
-```bash
+```console
 $ mix phx.new hello_phoenix -y
 ```
 
 Change into the newly-created `hello_phoenix` directory, configure
 your database in `config/dev.exs` and then run
 
-```bash
+```console
 $ mix ecto.create
 ```
 
@@ -24,7 +24,7 @@ jump over to the [Up and Running Guide](up_and_running.html).
 At this point, in a real project, you might reach for the Phoenix
 generator for creating a JSON resource which looks like this:
 
-```bash
+```console
 $ mix phx.gen.json  AllTheThings Thing things some_attr:string another_attr:string
 ```
 
@@ -42,7 +42,7 @@ creation is not in scope of this guide, we will use the generator.
 For more in-depth coverage of what a context is, read [the Contexts
 Guide](contexts.html#content)
 
-```bash
+```console
 $ mix phx.gen.context Accounts User users name:string email:string:unique password:string
 ```
 
@@ -51,7 +51,7 @@ Ordinarily we would spend time tweaking the generated migration file
 like non-null constraints and so on, but we don't care about that for
 this example.  Just run the migration:
 
-```bash
+```console
 $ mix ecto.migrate
 ```
 
@@ -61,7 +61,7 @@ We will be using Test Driven Development (TDD) to develop our code.
 The first step with TDD is to make sure the tests pass as is!  To do
 this run:
 
-```bash
+```console
 $ mix test
 ```
 
@@ -74,7 +74,7 @@ settings from `dev.exs` need to be copied over.
 For example, if the database port is at some non-standard setting,
 then running `mix test` will generate this kind of error:
 
-```bash
+```console
 ** (Mix) The database for HelloPhoenix.Repo couldn't be created: FATAL 3D000 (invalid_catalog_name): database "postgres" does not exist
 
 16:04:56.704 [error] GenServer #PID<0.3290.0> terminating
@@ -141,7 +141,7 @@ Create, show and update have more typical ways to fail because they need a way t
 
 Let's run the test:
 
-```bash
+```console
 $ mix test test/hello_phoenix_web/controllers/user_controller_test.exs
 ```
 
@@ -246,13 +246,13 @@ end
 
 Before running the test again, check out our new paths by running
 
-```bash
+```console
 $ mix phx.routes
 ```
 
 You should see six new routes in addition to the default '/' route:
 
-```bash
+```console
 page_path  GET     /               HelloPhoenixWeb.PageController :index
 user_path  GET     /api/users      HelloPhoenixWeb.UserController :index
 user_path  GET     /api/users/:id  HelloPhoenixWeb.UserController :show
@@ -336,7 +336,7 @@ Our show tests currently look like this:
 
 Run this test only by running the following command: (if your show tests don't start on line 45, change the line number accordingly)
 
-```bash
+```console
 $ mix test test/hello_phoenix_web/controllers/user_controller_test.exs:45
 ```
 
@@ -433,6 +433,8 @@ end
 ```
 
 When we run the test again, it passes.
+
+### No Show
 
 The last item we'll cover is the case where we don't find a user in `show/2`.
 
@@ -537,9 +539,11 @@ code, we can add additional error messages.
 
 With those implemented, our tests pass.
 
-The rest of the controller is left to you to implement as practice. To
+### No tests for the wicked
+
+The rest of the controller is left for you to implement as practice. To
 help you on your way, below is the fully fleshed out test file.  Of
-course there are lots of edge cases and error conditions that are not
+course there are lots of edge cases and error conditions that are *not*
 covered, but it should get you started.
 
 ```
